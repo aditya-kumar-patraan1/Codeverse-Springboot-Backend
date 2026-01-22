@@ -5,6 +5,8 @@ import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
 import com.adityavikas.codeverse.services.UserService;
 import com.adityavikas.codeverse.utils.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public")
+@Tag(name = "All Public API's",description = "This is the public controller used to check health of API connection,Registering and login user")
 public class PublicController {
 
     @Autowired
@@ -29,11 +32,13 @@ public class PublicController {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Operation(summary = "To check API health")
     @GetMapping("/health-check")
     public String checkHealh(){
         return "OK";
     }
 
+    @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody User user){
         try{
@@ -50,6 +55,7 @@ public class PublicController {
         }
     }
 
+    @Operation(summary = "to login user to codeverse")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
         try{

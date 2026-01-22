@@ -16,7 +16,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info().
                         title("Codeverse API's")
-                        .description("jk")
+                        .description("This is the UI for all the API needed for codeverse")
                 )
                 .servers(List.of(
                         new Server().url("http://localhost:8080"),
