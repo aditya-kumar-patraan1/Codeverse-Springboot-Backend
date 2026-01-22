@@ -2,6 +2,11 @@ package com.adityavikas.codeverse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @SpringBootApplication
 public class CodeverseApplication {
@@ -9,5 +14,10 @@ public class CodeverseApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CodeverseApplication.class, args);
 	}
+
+    @Bean
+    public PlatformTransactionManager falana(MongoDatabaseFactory factory){
+        return new MongoTransactionManager(factory);
+    }
 
 }

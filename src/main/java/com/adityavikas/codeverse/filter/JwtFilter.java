@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.filter;
 
+import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
