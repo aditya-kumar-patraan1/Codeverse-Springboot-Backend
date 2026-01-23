@@ -19,7 +19,8 @@ public class SwaggerConfig {
                         .description("This is the UI for all the API needed for codeverse")
                 )
                 .servers(List.of(
-                        new Server().url("http://localhost:8080"),
+                        new Server().url("https://codeverse-springboot-backend.onrender.com").description("Production server"),
+                        new Server().url("http://localhost:8080").description("Local server"),
                         new Server().url("http://localhost:7080")
                 ));
     }

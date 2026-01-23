@@ -19,12 +19,6 @@ target/
 *.iml
 *.ipr
 
-# Spring Boot config (DO NOT COMMIT)
-application.properties
-application.yml
-application-*.properties
-application-*.yml
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
