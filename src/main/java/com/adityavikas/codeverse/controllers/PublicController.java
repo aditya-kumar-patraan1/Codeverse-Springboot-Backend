@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/public")
 @Tag(name = "All Public API's",description = "This is the public controller used to check health of API connection,Registering and login user")
@@ -42,6 +44,7 @@ public class PublicController {
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody User user){
         try{
+            user.setRoles(List.of("USER"));
             boolean isSaved = userService.saveUserWithBcryptPassword(user);
             if(isSaved) {
                 return new ResponseEntity<>("User Registered successfully...", HttpStatus.OK);
@@ -70,5 +73,7 @@ public class PublicController {
             return new ResponseEntity<>("Username or password not correct",HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
 }
