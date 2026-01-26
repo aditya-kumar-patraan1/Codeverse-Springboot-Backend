@@ -1,6 +1,4 @@
 package com.adityavikas.codeverse.controllers;
-
-import com.adityavikas.codeverse.config.JwtConfig;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
 import com.adityavikas.codeverse.services.UserService;
@@ -15,7 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/public")
@@ -36,25 +36,29 @@ public class PublicController {
 
     @Operation(summary = "To check API health")
     @GetMapping("/health-check")
-    public String checkHealh(){
-        return "OK";
+    public ResponseEntity<?> checkHealth(){
+        return ResponseEntity.ok(List.of("Hey !","It's","Working"));
     }
 
     @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody User user){
+        Map<String,Integer> returnStatus = new HashMap<>();
+        returnStatus.put("status",0);
         try{
             user.setRoles(List.of("USER"));
             boolean isSaved = userService.saveUserWithBcryptPassword(user);
+
             if(isSaved) {
-                return new ResponseEntity<>("User Registered successfully...", HttpStatus.OK);
+                returnStatus.put("status",1);
+                return new ResponseEntity<>(returnStatus, HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("User not Registered", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(returnStatus, HttpStatus.BAD_REQUEST);
             }
         }
         catch(Exception e){
-            return new ResponseEntity<>("Error : User not Registered", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(returnStatus, HttpStatus.BAD_REQUEST);
         }
     }
 
