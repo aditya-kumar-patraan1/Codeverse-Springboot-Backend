@@ -49,7 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
-        response.addHeader("name","tigaon");
+//        response.addHeader("name","tigaon");
         chain.doFilter(request,response);
 
 

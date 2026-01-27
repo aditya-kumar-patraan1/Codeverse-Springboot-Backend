@@ -65,16 +65,19 @@ public class PublicController {
     @Operation(summary = "to login user to codeverse")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
+        Map<String,String> returnResponse = new HashMap<>();
+        returnResponse.put("jwtToken","");
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword())
             );
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
             String jwt = jwtUtils.generateToken(userDetails.getUsername());
-            return new ResponseEntity<>(jwt,HttpStatus.OK);
+            returnResponse.put("jwtToken",jwt);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }
         catch(Exception e){
-            return new ResponseEntity<>("Username or password not correct",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
         }
     }
 

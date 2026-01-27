@@ -22,8 +22,8 @@ public class UserController {
 
     @Operation(summary = "to check working based on authentication token")
     @GetMapping("/isWorking")
-    public String isWorking(){
-        return "Yes It is working";
+    public ResponseEntity<?> isWorking(){
+        return ResponseEntity.ok("It is working !");
     }
 
 }
