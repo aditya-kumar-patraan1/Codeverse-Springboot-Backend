@@ -1,4 +1,6 @@
 package com.adityavikas.codeverse.controllers;
+import com.adityavikas.codeverse.dto.LoginUserDTO;
+import com.adityavikas.codeverse.dto.UserDTO;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
 import com.adityavikas.codeverse.services.UserService;
@@ -42,9 +44,13 @@ public class PublicController {
 
     @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
-    public ResponseEntity<?> saveUser(@RequestBody User user){
+    public ResponseEntity<?> saveUser(@RequestBody LoginUserDTO userDTO){
         Map<String,Integer> returnStatus = new HashMap<>();
         returnStatus.put("status",0);
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
         try{
             user.setRoles(List.of("USER"));
             boolean isSaved = userService.saveUserWithBcryptPassword(user);
@@ -64,7 +70,10 @@ public class PublicController {
 
     @Operation(summary = "to login user to codeverse")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO){
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
         Map<String,String> returnResponse = new HashMap<>();
         returnResponse.put("jwtToken","");
         try{

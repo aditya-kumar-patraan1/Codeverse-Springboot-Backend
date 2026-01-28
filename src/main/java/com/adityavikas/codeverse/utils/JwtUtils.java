@@ -21,6 +21,7 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
+
     public String extractUsername(String token){
         Claims claims = extractAllClaims(token);
         return claims.getSubject();
