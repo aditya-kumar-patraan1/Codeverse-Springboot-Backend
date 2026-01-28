@@ -17,6 +17,7 @@ public class CodeverseApplication {
 
     @Bean
     public PlatformTransactionManager falana(MongoDatabaseFactory factory){
+
         return new MongoTransactionManager(factory);
     }
 
