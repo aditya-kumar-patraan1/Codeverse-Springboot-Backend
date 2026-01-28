@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+#hiding development configurations
 application-dev.properties
 
 ### STS ###
