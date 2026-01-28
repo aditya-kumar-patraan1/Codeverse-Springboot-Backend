@@ -2,6 +2,8 @@ package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.services.ProblemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/problem")
+@Tag(name="All Problem's API",description = "This is the API controller used to add delete or update the problem and it is accessible by admin only")
 public class ProblemController {
 
     @Autowired
     private ProblemService problemService;
 
+    @Operation(summary = "This is used to add problem by admin")
     @PostMapping("/add")
     public ResponseEntity<?> addProblem(@RequestBody Problem problem){
         try{
