@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class CodeverseApplication {
@@ -21,6 +22,11 @@ public class CodeverseApplication {
     public PlatformTransactionManager falana(MongoDatabaseFactory factory){
 
         return new MongoTransactionManager(factory);
+    }
+
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
     }
 
 }
