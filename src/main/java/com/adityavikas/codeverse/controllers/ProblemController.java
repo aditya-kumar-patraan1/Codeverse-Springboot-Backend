@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.controllers;
 
+import com.adityavikas.codeverse.dto.ProblemDTO;
 import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.services.ProblemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +20,19 @@ public class ProblemController {
 
     @Operation(summary = "This is used to add problem by admin")
     @PostMapping("/add")
-    public ResponseEntity<?> addProblem(@RequestBody Problem problem){
+    public ResponseEntity<?> addProblem(@RequestBody ProblemDTO problemDTO){
         try{
+            Problem problem = new Problem();
+            problem.setSno(problemDTO.getSno());
+            problem.setTitle(problem.getTitle());
+            problem.setSlug(problemDTO.getSlug());
+            problem.setTopicTags(problemDTO.getTopicTags());
+            problem.setDifficulty(problem.getDifficulty());
+            problem.setAcceptanceRate(problemDTO.getAcceptanceRate());
+            problem.setInputType(problemDTO.getInputType());
+            problem.setReturnType(problemDTO.getReturnType());
+            problem.setStatus(problemDTO.isStatus());
+            problem.setFunctionName(problemDTO.getFunctionName());
             Boolean isSaved = problemService.saveProblem(problem);
             if(isSaved){
                 return new ResponseEntity<>("Problem added",HttpStatus.OK);
