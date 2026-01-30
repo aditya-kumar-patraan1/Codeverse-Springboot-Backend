@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.controllers;
 
+import com.adityavikas.codeverse.dto.AdminDTO;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,8 +26,12 @@ public class AdminController {
     @Operation(summary = "this is used to create admin (Note: only a admin can create other admin)")
     // only one admin can create other admin not user is permitted to call this you can try it by yourself
     @PostMapping("/create-admin")
-    public ResponseEntity<?> createAdmin(@RequestBody User admin){
+    public ResponseEntity<?> createAdmin(@RequestBody AdminDTO adminDTO){
         try{
+            User admin = new User();
+            admin.setEmail(adminDTO.getEmail());
+            admin.setUsername(adminDTO.getUsername());
+            admin.setPassword(adminDTO.getPassword());
             admin.setRoles(List.of("ADMIN","USER"));   //giving both provisions
             boolean isAdminCreated = userService.saveUserWithBcryptPassword(admin);
             if(isAdminCreated){
