@@ -48,6 +48,8 @@ public class GoogleAuthController {
             HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(params,httpHeaders);
 
             ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(tokenEndpoint, request, Map.class);
+            Map body = tokenResponse.getBody();
+            Object idToken1 = tokenResponse.getBody().get("id_token");
             String idToken = tokenResponse.getBody().get("id_token").toString();
             System.out.println(idToken);
             return new ResponseEntity<>(idToken, HttpStatus.OK);
