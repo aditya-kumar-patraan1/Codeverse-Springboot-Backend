@@ -29,4 +29,8 @@ public class ProblemService {
         return true;
     }
 
+    public fetchAllProblems(){
+
+    }
+
 }

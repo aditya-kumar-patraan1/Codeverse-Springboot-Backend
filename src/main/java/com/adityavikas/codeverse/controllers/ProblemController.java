@@ -45,4 +45,15 @@ public class ProblemController {
         }
     }
 
+    @GetMapping("/fetch")
+    public ResponseEntity<?> fetchAllProblems(){
+        try{
+            problemService.
+            return new ResponseEntity<>(,HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
