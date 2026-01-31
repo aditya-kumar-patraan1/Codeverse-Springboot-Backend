@@ -44,7 +44,10 @@ public class AdminController {
     @GetMapping("/fetchUsers")
     public ResponseEntity<?> fetchAllUsers(){
         try{
-            userService.getAllUsers();
+            List<User> allUsers = userService.getAllUsers();
+            if(allUsers.isEmpty()){
+                return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+            }
             return new ResponseEntity<>(allUsers,HttpStatus.OK);
         }
         catch(Exception e){

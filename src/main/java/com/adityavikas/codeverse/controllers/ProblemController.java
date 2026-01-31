@@ -53,7 +53,7 @@ public class ProblemController {
         try{
             List<Problem> allProblems = problemService.fetchAllProblems();
             if(allProblems.isEmpty()){
-                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(allProblems,HttpStatus.OK);
         }
