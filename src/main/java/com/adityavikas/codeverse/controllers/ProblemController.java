@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/problem")
 @Tag(name="All Problem's API",description = "This is the API controller used to add delete or update the problem and it is accessible by admin only")
@@ -45,11 +47,15 @@ public class ProblemController {
         }
     }
 
+    @Operation(summary = "This is used to fetch all Api's")
     @GetMapping("/fetch")
     public ResponseEntity<?> fetchAllProblems(){
         try{
-            problemService.
-            return new ResponseEntity<>(,HttpStatus.OK);
+            List<Problem> allProblems = problemService.fetchAllProblems();
+            if(allProblems.isEmpty()){
+                return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(allProblems,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);

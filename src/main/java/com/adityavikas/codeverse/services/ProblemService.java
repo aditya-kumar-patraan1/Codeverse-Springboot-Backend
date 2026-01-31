@@ -30,7 +30,7 @@ public class ProblemService {
         return true;
     }
 
-    public fetchAllProblems(){
+    public List<Problem> fetchAllProblems(){
         return problemRepository.findAll();
     }
 
