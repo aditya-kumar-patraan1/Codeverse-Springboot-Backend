@@ -75,7 +75,7 @@ public class PublicController {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-        Map<String,String> returnResponse = new HashMap<>();
+        Map<String,Object> returnResponse = new HashMap<>();
         returnResponse.put("jwtToken","");
         try{
             authenticationManager.authenticate(
@@ -84,20 +84,8 @@ public class PublicController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
             String jwt = jwtUtils.generateToken(userDetails.getUsername());
             returnResponse.put("jwtToken",jwt);
-
-            Map<String,String> userData = new HashMap<>();
-            userData.put("username", userDetails.getUsername());
-            String role = userDetails.getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .findFirst()
-                    .orElse("ROLE_USER");
-            userData.put("role",role);
-            Map<String,Object> response = new HashMap<>();
-            response.put("status",1);
-            response.put("jwtToken",jwt);
-            response.put("data",userData);
-            return new ResponseEntity<>(response,HttpStatus.OK);
+            returnResponse.put("status",1);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
