@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,13 +84,25 @@ public class PublicController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
             String jwt = jwtUtils.generateToken(userDetails.getUsername());
             returnResponse.put("jwtToken",jwt);
-            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+
+            Map<String,String> userData = new HashMap<>();
+            userData.put("username", userDetails.getUsername());
+            String role = userDetails.getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .findFirst()
+                    .orElse("ROLE_USER");
+            userData.put("role",role);
+            Map<String,Object> response = new HashMap<>();
+            response.put("status",1);
+            response.put("jwtToken",jwt);
+            response.put("data",userData);
+            return new ResponseEntity<>(response,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
         }
     }
-
 
 
 }
