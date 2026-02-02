@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/admin")
@@ -53,7 +54,8 @@ public class AdminController {
             for(User user : allUsers){
                 LocalDateTime dt = user.getCreated_at();
                 String month = dt.getDayOfMonth() + " " + dt.getMonth().toString() + ", " + dt.getYear();
-                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), true,month));
+                boolean isAdmin = user.getRoles().stream().anyMatch(u -> "ADMIN".equalsIgnoreCase(u));
+                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), isAdmin,month));
             }
             if(allUsers.isEmpty()){
                 return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
