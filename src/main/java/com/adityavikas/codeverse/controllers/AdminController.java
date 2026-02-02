@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.dto.AdminDTO;
+import com.adityavikas.codeverse.dto.AllUserAPIResponseDTO;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,10 +49,16 @@ public class AdminController {
     public ResponseEntity<?> fetchAllUsers(){
         try{
             List<User> allUsers = userService.getAllUsers();
+            List<AllUserAPIResponseDTO> response = new ArrayList<>();
+            for(User user : allUsers){
+                LocalDateTime dt = user.getCreated_at();
+                String month = dt.getDayOfMonth() + " " + dt.getMonth().toString() + ", " + dt.getYear();
+                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), true,month));
+            }
             if(allUsers.isEmpty()){
                 return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(allUsers,HttpStatus.OK);
+            return new ResponseEntity<>(response,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
