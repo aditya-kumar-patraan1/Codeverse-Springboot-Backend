@@ -13,5 +13,6 @@ Having:
 1. Creation of Admin
 2. Creation User
 3. Getting all Users
-4. Login/Register
-
+4. Login/Register (using Jwt Tokens)
+5. Adding Problem
+6. Geting all Problems
