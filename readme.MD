@@ -16,3 +16,4 @@ Having:
 4. Login/Register (using Jwt Tokens)
 5. Adding Problem
 6. Geting all Problems
+7. Integration of OAuth2
