@@ -49,10 +49,20 @@ public class GoogleAuthController {
 
             ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(tokenEndpoint, request, Map.class);
             Map body = tokenResponse.getBody();
-            Object idToken1 = tokenResponse.getBody().get("id_token");
+//            Object idToken1 = tokenResponse.getBody().get("id_token");
             String idToken = tokenResponse.getBody().get("id_token").toString();
-            System.out.println(idToken);
-            return new ResponseEntity<>(idToken, HttpStatus.OK);
+//            System.out.println(idToken);
+            String userInfoUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + idToken;
+            ResponseEntity<Map> userInfoResponse = restTemplate.getForEntity(userInfoUrl,Map.class);
+
+            String email = null;
+
+            if(userInfoResponse.getStatusCode() == HttpStatus.OK){
+                Map<String,Object> userInfo = userInfoResponse.getBody();
+                email = userInfo.get("email").toString();
+            }
+
+            return new ResponseEntity<>(email, HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
