@@ -54,6 +54,9 @@ public class PublicController {
         user.setEmail(userDTO.getEmail());
         try{
             user.setRoles(List.of("USER"));
+            List<String> providers = user.getProvider();
+            providers.add("LOCAL");    //sign-in by LOCAL
+            user.setProvider(providers);
             boolean isSaved = userService.saveUserWithBcryptPassword(user);
 
             if(isSaved) {

@@ -62,6 +62,8 @@ public class GoogleAuthController {
                 email = userInfo.get("email").toString();
             }
 
+//            providers.add("LOCAL");    //sign-in by LOCAL
+
             return new ResponseEntity<>(email, HttpStatus.OK);
         }
         catch (Exception e){

@@ -31,6 +31,8 @@ public class User {
     private String email;
     private String password;
     private List<String> roles = new ArrayList<>();
+    // provider can be LOCAL or GOOGLE
+    private List<String> provider = new ArrayList<>();
     private LocalDateTime created_at;
 
 }
