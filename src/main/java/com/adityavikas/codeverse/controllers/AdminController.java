@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.dto.AdminDTO;
 import com.adityavikas.codeverse.dto.AllUserAPIResponseDTO;
+import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,4 +67,10 @@ public class AdminController {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/create-contest")
+    public ResponseEntity<?> createContest(@RequestBody Contest contest){
+
+    }
+
 }
