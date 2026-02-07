@@ -68,9 +68,4 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/create-contest")
-    public ResponseEntity<?> createContest(@RequestBody Contest contest){
-
-    }
-
 }

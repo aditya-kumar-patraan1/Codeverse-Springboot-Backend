@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ public class Contest {
     private LocalDateTime startTime;
     private int duration;
 
+    @Transient
     private String contestStatus;
 
     @DBRef
