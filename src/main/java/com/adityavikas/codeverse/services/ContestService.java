@@ -6,14 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 @Slf4j
 public class ContestService {
 
     @Autowired
     private ContestRepository contestRepository;
 
-    private boolean addContest(Contest contest){
+    public boolean addContest(Contest contest){
         try{
             contestRepository.save(contest);
         } catch (Exception e) {
