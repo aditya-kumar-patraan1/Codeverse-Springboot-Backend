@@ -17,3 +17,4 @@ Having:
 5. Adding Problem
 6. Geting all Problems
 7. Integration of OAuth2
+8. Integration of swagger

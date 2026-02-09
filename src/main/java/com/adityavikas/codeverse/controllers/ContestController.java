@@ -24,9 +24,10 @@ public class ContestController {
     @Autowired
     private ContestService contestService;
 
-    @PostMapping("/createContest")
+
     @Operation(summary = "This endpoint is used to add contest")
-    private ResponseEntity<?> addNewContest(@RequestBody Contest contest){
+    @PostMapping("/createContest")
+    public ResponseEntity<?> addNewContest(@RequestBody Contest contest){
         Map<String,Integer> response = new HashMap<>();
         response.put("status",0);
         try{
