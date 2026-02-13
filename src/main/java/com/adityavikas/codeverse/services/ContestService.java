@@ -25,8 +25,23 @@ public class ContestService {
         return true;
     }
 
-    private void deleteContest(ObjectId id){
+    public void deleteContest(ObjectId id){
         contestRepository.deleteById(id);
+    }
+
+    public boolean deleteContestByContestName(String contestName){
+        try{
+            Contest contest = contestRepository.findContestByContestName(contestName);
+            if(contest!=null){
+                contestRepository.deleteContestByContestName(contestName);
+                return true;
+            }
+            return false;
+        }
+        catch(Exception e){
+            log.error("Contest not deleted by contest name",e);
+            return false;
+        }
     }
 
 }

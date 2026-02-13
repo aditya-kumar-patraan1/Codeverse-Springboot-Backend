@@ -25,21 +25,5 @@ public class ContestController {
     private ContestService contestService;
 
 
-    @Operation(summary = "This endpoint is used to add contest")
-    @PostMapping("/createContest")
-    public ResponseEntity<?> addNewContest(@RequestBody Contest contest){
-        Map<String,Integer> response = new HashMap<>();
-        response.put("status",0);
-        try{
-            boolean isAdded = contestService.addContest(contest);
-            if(isAdded){
-                response.put("status",1);
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 }

@@ -4,18 +4,22 @@ import com.adityavikas.codeverse.dto.AdminDTO;
 import com.adityavikas.codeverse.dto.AllUserAPIResponseDTO;
 import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
+import com.adityavikas.codeverse.services.ContestService;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @RestController
@@ -25,6 +29,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ContestService contestService;
 
     @Operation(summary = "this is used to create admin (Note: only a admin can create other admin)")
     // only one admin can create other admin not user is permitted to call this you can try it by yourself
@@ -47,6 +54,7 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "This is the end point used to retrieve all user details")
     @GetMapping("/fetchUsers")
     public ResponseEntity<?> fetchAllUsers(){
         try{
@@ -65,6 +73,40 @@ public class AdminController {
         }
         catch(Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "This endpoint is used to add a contest for users")
+    @PostMapping("/createContest")
+    public ResponseEntity<?> addNewContest(@RequestBody Contest contest){
+        Map<String,Integer> response = new HashMap<>();
+        response.put("status",0);
+        try{
+            boolean isAdded = contestService.addContest(contest);
+            if(isAdded){
+                response.put("status",1);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Operation(summary = "This endpoint is used to delete a contest by contestname")
+    @DeleteMapping("/deleteContest/{contestName}")
+    public ResponseEntity<?> deleteContestByContestName(@PathVariable String contestName){
+        Map<String,Integer> response = new HashMap<>();
+        response.put("status",0);
+        try{
+            boolean isDeleted = contestService.deleteContestByContestName(contestName);
+            if(isDeleted){
+                response.put("status",1);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
