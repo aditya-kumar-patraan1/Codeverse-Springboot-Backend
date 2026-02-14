@@ -110,4 +110,24 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "This endpoint is used to modify the contest by contestname")
+    @PutMapping("/updateContest/{contestName}")
+    public ResponseEntity<?> updateContest(@PathVariable String contestName,@RequestBody Contest contest){
+        Map<String,Integer> response = new HashMap<>();
+        response.put("status",0);
+        try{
+            boolean isUpdated = contestService.updateContest(contestName,contest);
+            if(isUpdated){
+                response.put("status",1);
+                return new ResponseEntity<>(response,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

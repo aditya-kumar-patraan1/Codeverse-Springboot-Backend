@@ -7,6 +7,7 @@ import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,8 @@ public class User {
     private List<String> roles = new ArrayList<>();
     // provider can be LOCAL or GOOGLE
     private List<String> provider = new ArrayList<>();
+    @DBRef
+    private List<Contest> registeredContest = new ArrayList<>();
     private LocalDateTime created_at;
 
 }
