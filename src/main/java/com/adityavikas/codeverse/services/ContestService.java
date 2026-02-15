@@ -80,7 +80,8 @@ public class ContestService {
         if(contest!=null){
             User user = middlewares.getUserByJwt(authorizationHeader);
             if(!user.getRegisteredContest().isEmpty()){
-                user.getRegisteredContest().add();
+                 =
+                user.getRegisteredContest().add(saved);
             }
             else{
 

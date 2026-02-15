@@ -18,3 +18,4 @@ Having:
 6. Geting all Problems
 7. Integration of OAuth2
 8. Integration of swagger
+9. Added mongo relationship between collections
