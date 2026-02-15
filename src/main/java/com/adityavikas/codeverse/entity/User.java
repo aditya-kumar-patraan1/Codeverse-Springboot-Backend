@@ -34,8 +34,8 @@ public class User {
     private List<String> roles = new ArrayList<>();
     // provider can be LOCAL or GOOGLE
     private List<String> provider = new ArrayList<>();
-    @DBRef
-    private List<Contest> registeredContest = new ArrayList<>();
+//    @DBRef
+    private List<ObjectId> registeredContest = new ArrayList<>();
     private LocalDateTime created_at;
 
 }

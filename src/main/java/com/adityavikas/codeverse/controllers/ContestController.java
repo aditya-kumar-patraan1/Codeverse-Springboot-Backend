@@ -32,8 +32,13 @@ public class ContestController {
     public ResponseEntity<?> registerContest(HttpServletRequest request,@PathVariable String contestName){
         try{
             String authorizationHeader = request.getHeader("authorization");
-            User user = contestService.registerInContest(contestName, authorizationHeader);
-            return new ResponseEntity<>(user,HttpStatus.OK);
+            boolean isConnected = contestService.registerInContest(contestName, authorizationHeader);
+            if(isConnected){
+                return new ResponseEntity<>("YES",HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>("NO",HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

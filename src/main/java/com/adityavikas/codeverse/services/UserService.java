@@ -20,6 +20,9 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
 
     public boolean saveUserWithBcryptPassword(User user){
         try{

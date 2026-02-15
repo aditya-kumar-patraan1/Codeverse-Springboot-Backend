@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -21,6 +22,9 @@ public class ContestService {
 
     @Autowired
     private Middlewares middlewares;
+
+    @Autowired
+    private UserService userService;
 
 
 
@@ -75,21 +79,20 @@ public class ContestService {
         return false;
     }
 
-    public User registerInContest(String contestName,String authorizationHeader){
+    @Transactional
+    public boolean registerInContest(String contestName,String authorizationHeader){
         Contest contest = contestRepository.findContestByContestName(contestName);
         if(contest!=null){
             User user = middlewares.getUserByJwt(authorizationHeader);
-            if(!user.getRegisteredContest().isEmpty()){
-                contest.get
-            }
-            else{
-
-            }
-            return ;
+            contest.getRegisteredUsers().add(user.getUserId());
+            contestRepository.save(contest);
+            user.getRegisteredContest().add(contest.getContestId());
+            userService.saveUser(user);
+            return true;
         }
         else{
             log.error("Contest does'nt exist");
-            return null;
+            return false;
         }
     }
 
