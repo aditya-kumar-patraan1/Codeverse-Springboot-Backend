@@ -27,6 +27,8 @@ public class Contest {
     private String contestDescription;
     private LocalDateTime startTime;
     private int duration;
+    @DBRef
+    private List<Contest> registeredContest = new ArrayList<>();
     private String contestStatus;
 
 }
