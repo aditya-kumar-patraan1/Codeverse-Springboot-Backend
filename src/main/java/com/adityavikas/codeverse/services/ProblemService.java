@@ -3,6 +3,7 @@ package com.adityavikas.codeverse.services;
 import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.repository.ProblemRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProblemService {
@@ -32,6 +34,11 @@ public class ProblemService {
 
     public List<Problem> fetchAllProblems(){
         return problemRepository.findAll();
+    }
+
+    public Optional<Problem> fetchProblem(String objectStringId){
+        ObjectId objectId = new ObjectId(objectStringId);
+        return problemRepository.findById(objectId);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.dto.LoginUserDTO;
 import com.adityavikas.codeverse.dto.UserDTO;
+import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.entity.UserProfile;
+import com.adityavikas.codeverse.services.ProblemService;
 import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
 import com.adityavikas.codeverse.services.UserProfileService;
 import com.adityavikas.codeverse.services.UserService;
@@ -41,6 +43,9 @@ public class PublicController {
 
     @Autowired
     private UserProfileService userProfileService;
+
+    @Autowired
+    private ProblemService problemService;
 
     @Operation(summary = "To check API health")
     @GetMapping("/health-check")
@@ -105,6 +110,29 @@ public class PublicController {
             return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Operation(summary = "This is used to fetch the specific problem")
+    @GetMapping("/fetchOne/{problemId}")
+    public ResponseEntity<?> fetchOneProblem(@PathVariable String problemId) throws Exception {
+        Map<String, Object> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        returnResponse.put("problem",null);
+        try{
+            Problem problem = problemService.fetchProblem(problemId).orElse(null);
+            if(problem!=null){
+                returnResponse.put("status",0);
+                returnResponse.put("problem",problem);
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(returnResponse,HttpStatus.NOT_FOUND);
+            }
+        }
+        catch (Exception e){
+            throw new Exception("API error");
+        }
+    }
+
 
 
 }
