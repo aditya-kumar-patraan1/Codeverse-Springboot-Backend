@@ -2,7 +2,9 @@ package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.dto.LoginUserDTO;
 import com.adityavikas.codeverse.dto.UserDTO;
 import com.adityavikas.codeverse.entity.User;
+import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
+import com.adityavikas.codeverse.services.UserProfileService;
 import com.adityavikas.codeverse.services.UserService;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -37,6 +39,9 @@ public class PublicController {
     @Autowired
     private JwtUtils jwtUtils;
 
+    @Autowired
+    private UserProfileService userProfileService;
+
     @Operation(summary = "To check API health")
     @GetMapping("/health-check")
     public ResponseEntity<?> checkHealth(){
@@ -45,6 +50,7 @@ public class PublicController {
 
     @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
+    @Transactional
     public ResponseEntity<?> saveUser(@RequestBody LoginUserDTO userDTO){
         Map<String,Integer> returnStatus = new HashMap<>();
         returnStatus.put("status",0);
@@ -52,6 +58,11 @@ public class PublicController {
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setEmail(userDTO.getEmail());
+        // UserProfile created
+        UserProfile userProfile = new UserProfile();
+        userProfile.setFullName(userDTO.getUsername());
+        userProfile.setUsername(userDTO.getUsername());
+        userProfileService.saveUserProfile(userProfile);
         try{
             user.setRoles(List.of("USER"));
             List<String> providers = user.getProvider();
