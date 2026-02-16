@@ -125,7 +125,7 @@ public class PublicController {
                 return new ResponseEntity<>(returnResponse,HttpStatus.OK);
             }
             else{
-                return new ResponseEntity<>(returnResponse,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(returnResponse,HttpStatus.NO_CONTENT);
             }
         }
         catch (Exception e){
