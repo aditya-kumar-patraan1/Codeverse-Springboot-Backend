@@ -40,6 +40,7 @@ public class UserProfileController {
             UserProfile userProfile = userProfileService.getUserProfile(username);
             if(userProfile!=null){
                 returnResponse.put("data",userProfile);
+                returnResponse.put("status",1);
                 return new ResponseEntity<>(returnResponse, HttpStatus.OK);
             }
             else{
