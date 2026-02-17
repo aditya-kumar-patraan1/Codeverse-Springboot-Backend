@@ -30,6 +30,7 @@ public class UserProfile {
     private String location = "";
     private int overallRank = 5000000;
     private int contestRank = 67000;
+    private String websiteLink = ""
     private List<ObjectId> badgesList = new ArrayList<>();
 
 }
