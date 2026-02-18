@@ -24,6 +24,41 @@ public class UserProfileService {
         }
     }
 
+    public boolean updateUserProfile(UserProfile oldUser,UserProfile userProfile){
+        try{
+            if(!oldUser.getFullName().equalsIgnoreCase(userProfile.getFullName()) && !userProfile.getFullName().isEmpty()){
+                oldUser.setFullName(userProfile.getFullName());
+            }
+            if(!oldUser.getUsername().equalsIgnoreCase(userProfile.getUsername()) && !userProfile.getUsername().isEmpty()){
+                oldUser.setUsername(userProfile.getUsername());
+            }
+            if(!oldUser.getGender().equalsIgnoreCase(userProfile.getGender()) && !userProfile.getGender().isEmpty()){
+                oldUser.setGender(userProfile.getGender());
+            }
+            if(!oldUser.getSchoolName().equalsIgnoreCase(userProfile.getSchoolName()) && !userProfile.getSchoolName().isEmpty()){
+                oldUser.setSchoolName(userProfile.getSchoolName());
+            }
+            if(!oldUser.getLocation().equalsIgnoreCase(userProfile.getLocation()) && !userProfile.getLocation().isEmpty()){
+                oldUser.setLocation(userProfile.getLocation());
+            }
+            if(!oldUser.getWebsiteLink().equalsIgnoreCase(userProfile.getWebsiteLink()) && !userProfile.getWebsiteLink().isEmpty()){
+                oldUser.setWebsiteLink(userProfile.getWebsiteLink());
+            }
+            if(!oldUser.getBio().equalsIgnoreCase(userProfile.getBio()) && !userProfile.getBio().isEmpty()){
+                oldUser.setBio(userProfile.getBio());
+            }
+            if(!oldUser.getAvatarLink().equalsIgnoreCase(userProfile.getAvatarLink()) && !userProfile.getAvatarLink().isEmpty()){
+                oldUser.setAvatarLink(userProfile.getAvatarLink());
+            }
+            // saving the changes
+            userProfileRepository.save(oldUser);
+            return true;
+        } catch (Exception e) {
+            log.error("User profile not updated",e);
+            return false;
+        }
+    }
+
     public UserProfile getUserProfile(String username){
         return userProfileRepository.findByUsername(username);
     }

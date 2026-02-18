@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +43,27 @@ public class UserProfileController {
             }
             else{
                 return new ResponseEntity<>(returnResponse, HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "This API endpoint is used to update the user profile")
+    public ResponseEntity<?> updateUserProfile(HttpServletRequest request,@RequestBody UserProfile userProfile){
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        try{
+            String username = middlewares.getUsernameByJwt(request.getHeader("Authorization"));
+            UserProfile oldUser = userProfileService.getUserProfile(username);
+            boolean isUpdated = userProfileService.updateUserProfile(oldUser,userProfile);
+            if(isUpdated){
+                returnResponse.put("status",1);
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
