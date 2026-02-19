@@ -30,6 +30,7 @@ public class UserProfileService {
                 oldUser.setFullName(userProfile.getFullName());
             }
             if(!oldUser.getUsername().equalsIgnoreCase(userProfile.getUsername()) && !userProfile.getUsername().isEmpty()){
+                // if username changes generate new jwt token
                 oldUser.setUsername(userProfile.getUsername());
             }
             if(!oldUser.getGender().equalsIgnoreCase(userProfile.getGender()) && !userProfile.getGender().isEmpty()){
