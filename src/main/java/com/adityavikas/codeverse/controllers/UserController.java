@@ -46,8 +46,8 @@ public class UserController {
 
             if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
                 String jwt = authorizationHeader.substring(7);
-                String username = jwtUtils.extractUsername(jwt);
-                user = userRepository.findByUsername(username);
+                String userId = jwtUtils.extractUserId(jwt);
+                user = userService.getUserById(userId);
             }else{
                 throw new Exception("Invalid Jwt token");
             }

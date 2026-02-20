@@ -22,7 +22,7 @@ public class JwtUtils {
     }
 
 
-    public String extractUsername(String token){
+    public String extractUserId(String token){
         Claims claims = extractAllClaims(token);
         return claims.getSubject();
     }
@@ -43,9 +43,9 @@ public class JwtUtils {
                 .getPayload();
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String userid) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, userid);    // changed
     }
 
     private String createToken(Map<String, Object> claims, String subject) {

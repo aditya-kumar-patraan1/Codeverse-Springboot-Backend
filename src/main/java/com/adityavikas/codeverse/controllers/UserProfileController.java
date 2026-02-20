@@ -4,12 +4,14 @@ import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.services.UserProfileService;
+import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,6 +27,9 @@ public class UserProfileController {
 
     @Autowired
     private Middlewares middlewares;
+
+    @Autowired
+    private UserService userService;
 
     @Operation(summary = "This API is used to retrieve the User Profile")
     @GetMapping("/get")
@@ -49,16 +54,20 @@ public class UserProfileController {
         }
     }
 
+    @Transactional
     @PostMapping("/update")
     @Operation(summary = "This API endpoint is used to update the user profile")
     public ResponseEntity<?> updateUserProfile(HttpServletRequest request,@RequestBody UserProfile userProfile){
-        Map<String,Integer> returnResponse = new HashMap<>();
+        Map<String,Object> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
         try{
-            String username = middlewares.getUsernameByJwt(request.getHeader("Authorization"));
+            String userId = middlewares.getUserIdByJwt(request.getHeader("Authorization"));
+            String username = userService.getUserById(userId).getUsername();
             UserProfile oldUser = userProfileService.getUserProfile(username);
-            boolean isUpdated = userProfileService.updateUserProfile(oldUser,userProfile);
-            if(isUpdated){
+            boolean isUpdatedUserProfile = userProfileService.updateUserProfile(oldUser,userProfile);
+            // update the username also in registration details in codeverse_users
+            boolean isUpdatedUser = userService.updateUser(userId, userProfile.getUsername());
+            if(isUpdatedUser){
                 returnResponse.put("status",1);
                 return new ResponseEntity<>(returnResponse,HttpStatus.OK);
             }

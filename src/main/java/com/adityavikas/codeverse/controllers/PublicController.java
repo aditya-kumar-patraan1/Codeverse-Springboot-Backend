@@ -4,6 +4,7 @@ import com.adityavikas.codeverse.dto.UserDTO;
 import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.entity.UserProfile;
+import com.adityavikas.codeverse.repository.UserRepository;
 import com.adityavikas.codeverse.services.ProblemService;
 import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
 import com.adityavikas.codeverse.services.UserProfileService;
@@ -11,6 +12,7 @@ import com.adityavikas.codeverse.services.UserService;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,9 @@ public class PublicController {
     @Autowired
     private ProblemService problemService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Operation(summary = "To check API health")
     @GetMapping("/health-check")
     public ResponseEntity<?> checkHealth(){
@@ -67,13 +72,15 @@ public class PublicController {
         UserProfile userProfile = new UserProfile();
         userProfile.setFullName(userDTO.getUsername());
         userProfile.setUsername(userDTO.getUsername());
-        userProfileService.saveUserProfile(userProfile);
+//        userProfileService.saveUserProfile(userProfile);
         try{
             user.setRoles(List.of("USER"));
             List<String> providers = user.getProvider();
             providers.add("LOCAL");    //sign-in by LOCAL
             user.setProvider(providers);
             boolean isSaved = userService.saveUserWithBcryptPassword(user);
+            userProfile.setUserId(userRepository.findByUsername(user.getUsername()).getUserId());
+            userProfileService.saveUserProfile(userProfile);
 
             if(isSaved) {
                 returnStatus.put("status",1);
@@ -97,11 +104,15 @@ public class PublicController {
         Map<String,Object> returnResponse = new HashMap<>();
         returnResponse.put("jwtToken","");
         try{
+            ObjectId Id = userRepository.findByUsername(user.getUsername()).getUserId();
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword())
+                    new UsernamePasswordAuthenticationToken(Id,user.getPassword())
             );
-            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-            String jwt = jwtUtils.generateToken(userDetails.getUsername());
+            String userId = null;
+            if(Id!=null){
+                userId = Id.toString();
+            }
+            String jwt = jwtUtils.generateToken(userId);
             returnResponse.put("jwtToken",jwt);
             returnResponse.put("status",1);
             return new ResponseEntity<>(returnResponse,HttpStatus.OK);

@@ -19,6 +19,7 @@ public class UserProfile {
 
     @Id
     private ObjectId id;
+    private ObjectId userId;   //change
     private String fullName = "";
     @Indexed(unique = true)
     private String username;

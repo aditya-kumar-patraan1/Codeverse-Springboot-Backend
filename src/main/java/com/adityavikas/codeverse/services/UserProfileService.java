@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.repository.UserProfileRepository;
+import com.adityavikas.codeverse.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ public class UserProfileService {
 
     @Autowired
     private UserProfileRepository userProfileRepository;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public boolean saveUserProfile(UserProfile userProfile){
         try{
@@ -25,12 +29,16 @@ public class UserProfileService {
     }
 
     public boolean updateUserProfile(UserProfile oldUser,UserProfile userProfile){
+
+//        String jwtToken = null;
+
         try{
             if(!oldUser.getFullName().equalsIgnoreCase(userProfile.getFullName()) && !userProfile.getFullName().isEmpty()){
                 oldUser.setFullName(userProfile.getFullName());
             }
             if(!oldUser.getUsername().equalsIgnoreCase(userProfile.getUsername()) && !userProfile.getUsername().isEmpty()){
                 // if username changes generate new jwt token
+//                jwtToken = jwtUtils.generateToken(userProfile.getUsername());
                 oldUser.setUsername(userProfile.getUsername());
             }
             if(!oldUser.getGender().equalsIgnoreCase(userProfile.getGender()) && !userProfile.getGender().isEmpty()){

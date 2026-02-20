@@ -3,6 +3,7 @@ package com.adityavikas.codeverse.services;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +37,28 @@ public class UserService {
             return false;
         }
         return true;
+    }
+
+    // change
+    public User getUserById(String userId){
+        ObjectId objectId = new ObjectId(userId);
+        return userRepository.findById(objectId).orElse(null);
+    }
+
+    // this is the exception only right that we are providing to the user for userProfile
+    public boolean updateUser(String Id,String newUsername){
+        ObjectId userId = new ObjectId(Id);
+        try{
+            User oldUser = userRepository.findById(userId).orElse(null);
+            if(oldUser!=null && !newUsername.isEmpty() && !oldUser.getUsername().equalsIgnoreCase(newUsername)){
+                oldUser.setUsername(newUsername);
+            }
+            userRepository.save(oldUser);
+            return true;
+        } catch (Exception e) {
+            log.error("User not update for user profile");
+            return false;
+        }
     }
 
     public List<User> getAllUsers(){

@@ -18,26 +18,29 @@ public class Middlewares {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private  UserService userService;
+
     public User getUserByJwt(String authorizationHeader){
-        String username = null;
+        String userId = null;
         String jwt = null;
         User user = null;
         if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer")){
             jwt = authorizationHeader.substring(7);
-            username = jwtUtils.extractUsername(jwt);
-            user = userRepository.findByUsername(username);
+            userId = jwtUtils.extractUserId(jwt);
+            user = userService.getUserById(userId);
         }
         return user;
     }
 
-    public String getUsernameByJwt(String authorizationHeader){
-        String username = null;
+    public String getUserIdByJwt(String authorizationHeader){
+        String userId = null;
         String jwt = null;
         if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer")){
             jwt = authorizationHeader.substring(7);
-            username = jwtUtils.extractUsername(jwt);
+            userId = jwtUtils.extractUserId(jwt);
         }
-        return username;
+        return userId;
     }
 
 }

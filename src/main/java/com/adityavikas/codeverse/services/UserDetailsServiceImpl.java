@@ -11,23 +11,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+//    @Autowired
+//    private UserRepository userRepository;   //change
+
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
+        User user = userService.getUserById(userId);
 
         if(user!=null){
             UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUsername())
+                    .username(user.getUserId().toString())
                     .password(user.getPassword())
                     .roles(user.getRoles().toArray(new String[0]))
                     .build();
             return userDetails;
         }
 
-        throw new UsernameNotFoundException("User not found with username"+username);
+        throw new UsernameNotFoundException("User not found with userId"+userId);
     }
 }
