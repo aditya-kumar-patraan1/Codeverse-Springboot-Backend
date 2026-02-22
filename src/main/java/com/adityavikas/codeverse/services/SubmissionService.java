@@ -22,9 +22,10 @@ public class SubmissionService {
 
     private static final Logger logger = LoggerFactory.getLogger(Submission.class);
 
-    public List<Submission> getAllSubmissionOfUser(){
+    public List<Submission> getAllSubmissionOfUser(String username){
         try{
-            return submissionRepository.findAll();
+            Stream<Submission> submissionStream = submissionRepository.findAll().stream().filter(submission -> submission.getUsername().equalsIgnoreCase(username));
+            return submissionStream.toList();
         }
         catch(Exception e){
             logger.error("submissions not retrieved");

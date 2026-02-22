@@ -3,19 +3,20 @@ package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.entity.Submission;
 import com.adityavikas.codeverse.services.SubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/submission")
+@Tag(name="Submission Controller",description = "This Controller is used to handle all operations related to submissions like creation retrievals etc.")
 public class SubmissionController {
 
     @Autowired
@@ -34,6 +35,16 @@ public class SubmissionController {
         else{
             return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Operation(summary = "This API endpoint is used to fetch all the submission of user for all the problems")
+    @GetMapping("/getAll/{username}")
+    public ResponseEntity<?> fetchAllSubmissions(@PathVariable String username){
+        List<Submission> allSubmissions = submissionService.getAllSubmissionOfUser(username);
+        if(!allSubmissions.isEmpty()){
+            return new ResponseEntity<>(allSubmissions,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
     }
 
 
