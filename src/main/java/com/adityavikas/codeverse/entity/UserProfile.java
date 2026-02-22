@@ -29,9 +29,9 @@ public class UserProfile {
     private String bio = "";
     private String schoolName = "";
     private String location = "";
-    private int overallRank = 5000000;
-    private int contestRank = 67000;
+    private int overallRank = 5000000;      //this will be assigned by admin
+    private int contestRank = 67000;    //this will be assigned by admin
     private String websiteLink = "";
-    private List<ObjectId> badgesList = new ArrayList<>();
+    private List<ObjectId> badgesList = new ArrayList<>();   //this will be assigned by admin
 
 }
