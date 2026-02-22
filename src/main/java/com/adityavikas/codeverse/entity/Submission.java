@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.entity;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -26,6 +27,7 @@ public class Submission {
     private String status;   //ACCEPTED,TLE,WRONG ANSWER
     private String time;
     private String memory;
+    @NotNull
     private String slug;
 
 }
