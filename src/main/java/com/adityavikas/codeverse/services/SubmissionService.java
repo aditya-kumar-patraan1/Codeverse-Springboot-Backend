@@ -33,10 +33,10 @@ public class SubmissionService {
         }
     }
 
-    public List<Submission> getAllSubmissionForSameProblemByUser(String username){
+    public List<Submission> getAllSubmissionForSameProblemByUser(String username,String problemId){
         try{
             Stream<Submission> submissionStream = submissionRepository.findAll().stream().filter(submission -> submission.getUsername().equalsIgnoreCase(username));
-            return submissionStream.toList();
+            return submissionStream.filter(submission -> submission.getProblemId().equalsIgnoreCase(problemId)).toList();
         } catch (Exception e) {
             logger.error("submissions not retrieved");
             return null;

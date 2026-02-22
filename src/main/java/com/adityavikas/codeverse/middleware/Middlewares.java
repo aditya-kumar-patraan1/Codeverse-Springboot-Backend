@@ -43,4 +43,17 @@ public class Middlewares {
         return userId;
     }
 
+    public String getUserNameByJwt(String authorizationHeader){
+        String userId = null;
+        String jwt = null;
+        if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
+            jwt = authorizationHeader.substring(7);
+            userId = jwtUtils.extractUserId(jwt);
+        }
+        if(!userId.isEmpty()){
+            return userService.getUserById(userId).getUsername();
+        }
+        return null;
+    }
+
 }
