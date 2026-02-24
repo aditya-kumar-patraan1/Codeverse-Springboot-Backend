@@ -3,16 +3,20 @@ package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.middleware.Middlewares;
+import com.adityavikas.codeverse.services.CloudinaryService;
 import com.adityavikas.codeverse.services.UserProfileService;
 import com.adityavikas.codeverse.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,16 +59,18 @@ public class UserProfileController {
     }
 
     @Transactional
-    @PostMapping("/update")
+    @PostMapping(value = "/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "This API endpoint is used to update the user profile")
-    public ResponseEntity<?> updateUserProfile(HttpServletRequest request,@RequestBody UserProfile userProfile){
+    public ResponseEntity<?> updateUserProfile(HttpServletRequest request, @RequestPart("userProfileJson") String userProfileJson, @RequestPart(value = "avatarMedia",required = false) MultipartFile avatarMedia){
         Map<String,Object> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
         try{
+            ObjectMapper mapper = new ObjectMapper();
+            UserProfile userProfile =mapper.readValue(userProfileJson,UserProfile.class);
             String userId = middlewares.getUserIdByJwt(request.getHeader("Authorization"));
             String username = userService.getUserById(userId).getUsername();
             UserProfile oldUser = userProfileService.getUserProfile(username);
-            boolean isUpdatedUserProfile = userProfileService.updateUserProfile(oldUser,userProfile);
+            boolean isUpdatedUserProfile = userProfileService.updateUserProfile(oldUser,userProfile,avatarMedia);
             // update the username also in registration details in codeverse_users
             boolean isUpdatedUser = userService.updateUser(userId, userProfile.getUsername());
             if(isUpdatedUser){

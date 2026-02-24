@@ -6,6 +6,7 @@ import com.adityavikas.codeverse.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -16,6 +17,9 @@ public class UserProfileService {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     public boolean saveUserProfile(UserProfile userProfile){
         try{
@@ -28,11 +32,16 @@ public class UserProfileService {
         }
     }
 
-    public boolean updateUserProfile(UserProfile oldUser,UserProfile userProfile){
+    public boolean updateUserProfile(UserProfile oldUser, UserProfile userProfile, MultipartFile avatarMedia){
 
 //        String jwtToken = null;
 
         try{
+            //handling "avatarMedia"
+            if(avatarMedia!=null && !avatarMedia.isEmpty()){
+                String avatarLink = cloudinaryService.uploadFileToCloudinary(avatarMedia);
+                oldUser.setAvatarLink(avatarLink);
+            }
             if(!oldUser.getFullName().equalsIgnoreCase(userProfile.getFullName()) && !userProfile.getFullName().isEmpty()){
                 oldUser.setFullName(userProfile.getFullName());
             }
@@ -55,9 +64,6 @@ public class UserProfileService {
             }
             if(!oldUser.getBio().equalsIgnoreCase(userProfile.getBio()) && !userProfile.getBio().isEmpty()){
                 oldUser.setBio(userProfile.getBio());
-            }
-            if(!oldUser.getAvatarLink().equalsIgnoreCase(userProfile.getAvatarLink()) && !userProfile.getAvatarLink().isEmpty()){
-                oldUser.setAvatarLink(userProfile.getAvatarLink());
             }
             // saving the changes
             userProfileRepository.save(oldUser);
