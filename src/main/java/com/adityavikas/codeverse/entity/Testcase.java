@@ -11,7 +11,7 @@ public class Testcase {
 
     @Id
     private ObjectId id;
-    private ObjectId problemId;
+    private String problemId;
     private String testcaseId;
     private boolean isHidden;    //is hidden testcase exists true/false
     private String input;
