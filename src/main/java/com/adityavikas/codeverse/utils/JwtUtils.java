@@ -16,7 +16,7 @@ public class JwtUtils {
 
     private String SECRET_KEY = "TaK+HaV^uvCHEFsEVfypW#7g9^k*Zrdg8$V";
 
-    @Autowired
+//    @Autowired
     private SecretKey getSigningKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
