@@ -67,6 +67,23 @@ public class SubmissionController {
         return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "This API Endpoint is used to access the submission thorugh slug")
+    @GetMapping("/getSharedSubmission/{slug}")
+    public ResponseEntity<?> getSharedSubmission(@PathVariable String slug){
 
+        Submission submission = submissionService.getSharedSubmission(slug);
+
+        Map<String,Object> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        returnResponse.put("data",null);
+        if(submission!=null){
+            returnResponse.put("data",submission);
+            returnResponse.put("status",1);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(returnResponse,HttpStatus.NO_CONTENT);
+        }
+    }
 
 }

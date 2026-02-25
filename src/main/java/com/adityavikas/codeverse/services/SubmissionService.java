@@ -55,4 +55,14 @@ public class SubmissionService {
         }
     }
 
+
+    public Submission getSharedSubmission(String slug){
+        try{
+            return submissionRepository.findByslug(slug);
+        } catch (Exception e) {
+            logger.error("wrong slug to access submission code",e);
+            return null;
+        }
+    }
+
 }
