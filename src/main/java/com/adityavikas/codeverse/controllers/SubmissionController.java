@@ -57,7 +57,7 @@ public class SubmissionController {
 
     @Operation(summary = "This API endpoint is used to fetch all the submission of user for the same problem")
     @GetMapping("/get/{problemId}")
-    public ResponseEntity<?> fetchAllSubmissions(HttpServletRequest request, @PathVariable String problemId){
+    public ResponseEntity<?> fetchAllSubmissionsForSameProblem(HttpServletRequest request, @PathVariable String problemId){
         String authorizationHeader = request.getHeader("Authorization");
         String username = middlewares.getUserNameByJwt(authorizationHeader);
         List<Submission> allSubmissions = submissionService.getAllSubmissionForSameProblemByUser(username,problemId);
