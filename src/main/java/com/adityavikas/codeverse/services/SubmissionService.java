@@ -3,6 +3,7 @@ package com.adityavikas.codeverse.services;
 import com.adityavikas.codeverse.entity.Submission;
 import com.adityavikas.codeverse.repository.SubmissionRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,10 @@ public class SubmissionService {
         }
     }
 
-    public List<Submission> getAllSubmissionForSameProblemByUser(String username,String problemId){
+    public List<Submission> getAllSubmissionForSameProblemByUser(String username, ObjectId problemId){
         try{
             Stream<Submission> submissionStream = submissionRepository.findAll().stream().filter(submission -> submission.getUsername().equalsIgnoreCase(username));
-            return submissionStream.filter(submission -> submission.getProblemId().equalsIgnoreCase(problemId)).toList();
+            return submissionStream.filter(submission -> submission.getProblemId().equals(problemId)).toList();
         } catch (Exception e) {
             logger.error("submissions not retrieved");
             return null;

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,7 @@ public class SubmissionController {
 
     @Operation(summary = "This API endpoint is used to fetch all the submission of user for the same problem")
     @GetMapping("/get/{problemId}")
-    public ResponseEntity<?> fetchAllSubmissionsForSameProblem(HttpServletRequest request, @PathVariable String problemId){
+    public ResponseEntity<?> fetchAllSubmissionsForSameProblem(HttpServletRequest request, @PathVariable ObjectId problemId){
         String authorizationHeader = request.getHeader("Authorization");
         String username = middlewares.getUserNameByJwt(authorizationHeader);
         List<Submission> allSubmissions = submissionService.getAllSubmissionForSameProblemByUser(username,problemId);
@@ -67,7 +68,7 @@ public class SubmissionController {
         return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "This API Endpoint is used to access the submission thorugh slug")
+    @Operation(summary = "This API Endpoint is used to access the submission through slug")
     @GetMapping("/getSharedSubmission/{slug}")
     public ResponseEntity<?> getSharedSubmission(@PathVariable String slug){
 
