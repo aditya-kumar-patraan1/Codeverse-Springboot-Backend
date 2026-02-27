@@ -31,7 +31,10 @@ public class SubmissionController {
 
     @PostMapping("/create")
     @Operation(summary = "This API endpoint is used to create & Store the Submission")
-    public ResponseEntity<?> createSubmission(@RequestBody Submission submission){
+    public ResponseEntity<?> createSubmission(HttpServletRequest request,@RequestBody Submission submission){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = middlewares.getUserNameByJwt(authorizationHeader);
+        submission.setUsername(username);
         boolean isSubmissionStored = submissionService.createSubmission(submission);
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
@@ -50,7 +53,7 @@ public class SubmissionController {
         String authorizationHeader = request.getHeader("Authorization");
         String username = middlewares.getUserNameByJwt(authorizationHeader);
         List<Submission> allSubmissions = submissionService.getAllSubmissionOfUser(username);
-        if(!allSubmissions.isEmpty()){
+        if(allSubmissions!=null && !allSubmissions.isEmpty()){
             return new ResponseEntity<>(allSubmissions,HttpStatus.OK);
         }
         return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
