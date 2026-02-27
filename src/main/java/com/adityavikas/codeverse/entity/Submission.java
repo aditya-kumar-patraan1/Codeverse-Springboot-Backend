@@ -1,5 +1,7 @@
 package com.adityavikas.codeverse.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -14,11 +16,12 @@ import java.time.LocalDateTime;
 public class Submission {
 
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId submissionId;
 
     @Indexed(unique = true)
     private String username = "";
-
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId problemId;
 
     private String userCode = "";
