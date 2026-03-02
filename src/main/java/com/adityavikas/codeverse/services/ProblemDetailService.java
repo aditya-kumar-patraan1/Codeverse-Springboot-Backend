@@ -26,4 +26,14 @@ public class ProblemDetailService {
         }
     }
 
+    public ProblemDetails fetchProblemDetail(String problemId){
+        try{
+            return problemDetailRepository.findByProblemId(problemId);
+        }
+        catch(Exception e){
+            logger.error("Problem details not fetched");
+            return null;
+        }
+    }
+
 }
