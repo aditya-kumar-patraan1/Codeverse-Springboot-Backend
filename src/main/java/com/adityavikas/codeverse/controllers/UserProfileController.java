@@ -61,7 +61,7 @@ public class UserProfileController {
     @Transactional
     @PostMapping(value = "/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "This API endpoint is used to update the user profile")
-    public ResponseEntity<?> updateUserProfile(HttpServletRequest request, @RequestPart("userProfileJson") String userProfileJson, @RequestPart(value = "avatarMedia",required = false) MultipartFile avatarMedia){
+    public ResponseEntity<?> updateUserProfile(HttpServletRequest request, @RequestPart("userProfileJson") String userProfileJson, @RequestPart(value = "avatarMedia",required = false) MultipartFile avatarMedia,@RequestPart(value = "cloudinaryLink",required = false) String cloudinaryLink){
         Map<String,Object> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
         try{
@@ -70,7 +70,7 @@ public class UserProfileController {
             String userId = middlewares.getUserIdByJwt(request.getHeader("Authorization"));
             String username = userService.getUserById(userId).getUsername();
             UserProfile oldUser = userProfileService.getUserProfile(username);
-            boolean isUpdatedUserProfile = userProfileService.updateUserProfile(oldUser,userProfile,avatarMedia);
+            userProfileService.updateUserProfile(oldUser,userProfile,avatarMedia,cloudinaryLink, oldUser.getAvatarLink());
             // update the username also in registration details in codeverse_users
             boolean isUpdatedUser = userService.updateUser(userId, userProfile.getUsername());
             if(isUpdatedUser){

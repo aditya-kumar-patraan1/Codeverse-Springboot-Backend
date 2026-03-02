@@ -32,7 +32,7 @@ public class UserProfileService {
         }
     }
 
-    public boolean updateUserProfile(UserProfile oldUser, UserProfile userProfile, MultipartFile avatarMedia){
+    public boolean updateUserProfile(UserProfile oldUser, UserProfile userProfile, MultipartFile avatarMedia,String cloudinaryLink,String dbProfileLink){
 
 //        String jwtToken = null;
 
@@ -41,6 +41,9 @@ public class UserProfileService {
             if(avatarMedia!=null && !avatarMedia.isEmpty()){
                 String avatarLink = cloudinaryService.uploadFileToCloudinary(avatarMedia);
                 oldUser.setAvatarLink(avatarLink);
+            }
+            if(cloudinaryLink!=null && !cloudinaryLink.isEmpty() && cloudinaryLink!=dbProfileLink){
+                oldUser.setAvatarLink(cloudinaryLink);
             }
             if(!oldUser.getFullName().equalsIgnoreCase(userProfile.getFullName()) && !userProfile.getFullName().isEmpty()){
                 oldUser.setFullName(userProfile.getFullName());
