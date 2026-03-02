@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.dto.LoginUserDTO;
 import com.adityavikas.codeverse.dto.UserDTO;
 import com.adityavikas.codeverse.entity.Problem;
+import com.adityavikas.codeverse.entity.ProblemDetails;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.repository.UserRepository;
@@ -146,9 +147,18 @@ public class PublicController {
 
 
     @Operation(summary = "This API endpoint is used to fetch the Problem Details")
-    @GetMapping("/fetchProblemDetail")
+    @GetMapping("/fetchProblemDetail/{problemId}")
     public ResponseEntity<?> fetchProblemDetail(@PathVariable String problemId){
-        problemDetailService.fetchProblemDetail();
+        Map<String,Object> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        returnResponse.put("data",null);
+        ProblemDetails problemDetails = problemDetailService.fetchProblemDetail(problemId);
+        if(problemDetails!=null){
+            returnResponse.put("status",1);
+            returnResponse.put("data",problemDetails);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(returnResponse,HttpStatus.NO_CONTENT);
     }
 
 

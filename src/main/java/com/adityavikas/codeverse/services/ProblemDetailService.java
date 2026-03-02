@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.ProblemDetails;
 import com.adityavikas.codeverse.repository.ProblemDetailRepository;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class ProblemDetailService {
 
     public ProblemDetails fetchProblemDetail(String problemId){
         try{
-            return problemDetailRepository.findByProblemId(problemId);
+            ObjectId objectId = new ObjectId(problemId);
+            return problemDetailRepository.findByProblemId(objectId);
         }
         catch(Exception e){
             logger.error("Problem details not fetched");
