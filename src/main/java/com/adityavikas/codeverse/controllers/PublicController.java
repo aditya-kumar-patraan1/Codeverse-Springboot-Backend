@@ -5,10 +5,7 @@ import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.repository.UserRepository;
-import com.adityavikas.codeverse.services.ProblemService;
-import com.adityavikas.codeverse.services.UserDetailsServiceImpl;
-import com.adityavikas.codeverse.services.UserProfileService;
-import com.adityavikas.codeverse.services.UserService;
+import com.adityavikas.codeverse.services.*;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,6 +48,9 @@ public class PublicController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProblemDetailService problemDetailService;
 
     @Operation(summary = "To check API health")
     @GetMapping("/health-check")
@@ -142,6 +142,13 @@ public class PublicController {
         catch (Exception e){
             throw new Exception("API error");
         }
+    }
+
+
+    @Operation(summary = "This API endpoint is used to fetch the Problem Details")
+    @GetMapping("/fetchProblemDetail")
+    public ResponseEntity<?> fetchProblemDetail(@PathVariable String problemId){
+        problemDetailService.fetchProblemDetail();
     }
 
 
