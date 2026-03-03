@@ -38,4 +38,16 @@ public class ProblemDetailService {
         }
     }
 
+    public boolean deleteProblemDetails(String problemId){
+        ObjectId objectId = new ObjectId(problemId);
+        try{
+            problemDetailRepository.deleteById(objectId);
+            return true;
+        }
+        catch(Exception e){
+            logger.error("problem Details not deleted");
+            return false;
+        }
+    }
+
 }

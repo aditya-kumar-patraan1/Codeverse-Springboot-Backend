@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.Problem;
+import com.adityavikas.codeverse.entity.ProblemDetails;
 import com.adityavikas.codeverse.repository.ProblemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -21,6 +22,12 @@ public class ProblemService {
     @Autowired
     private ProblemRepository problemRepository;
 
+    @Autowired
+    private ProblemDetailService problemDetailService;
+
+    @Autowired
+    private TestcaseService testcaseService;
+
     public Boolean saveProblem(Problem problem){
         try{
             problem.setCreated_at(LocalDateTime.now());
@@ -39,6 +46,35 @@ public class ProblemService {
     public Optional<Problem> fetchProblem(String objectStringId){
         ObjectId objectId = new ObjectId(objectStringId);
         return problemRepository.findById(objectId);
+    }
+
+    public boolean deleteProblem(String problemId){
+        ObjectId objectId = new ObjectId(problemId);
+        try{
+            problemRepository.deleteById(objectId);
+            return true;
+        }
+        catch (Exception e) {
+            logger.error("testcase not deleted");
+            return false;
+        }
+    }
+
+    public boolean deleteCompleteProblem(String problemId){
+        try{
+            // from problem
+            boolean isDeleted1 = deleteProblem(problemId);
+            // from testcase collection
+            boolean isDeleted2 = testcaseService.deleteTestcase(problemId);
+            // from problemDetails collection
+            boolean isDeleted3 = problemDetailService.deleteProblemDetails(problemId);
+
+            return isDeleted2 && isDeleted1 && isDeleted3;
+        }
+        catch(Exception e){
+            logger.error("problem not deleted");
+            return false;
+        }
     }
 
 }

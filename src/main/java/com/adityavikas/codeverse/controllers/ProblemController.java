@@ -5,6 +5,7 @@ import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.services.ProblemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,4 +62,17 @@ public class ProblemController {
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Operation(summary = "This API Endpoint is used to delete the entire problem(including the testcase,solution,editorial,description/details)")
+    @DeleteMapping("/deleteEntireProblem/{problemId}")
+    public ResponseEntity<?> deleteProblem(@PathVariable String problemId){
+        boolean isDeleted = problemService.deleteCompleteProblem(problemId);
+        Map<String,Integer> returnResponse = new HashMap<>();
+
+        if(isDeleted){
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+    }
+
 }
