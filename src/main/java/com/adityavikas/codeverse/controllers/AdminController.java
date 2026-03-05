@@ -8,6 +8,8 @@ import com.adityavikas.codeverse.services.ContestService;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.Response;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,7 +96,7 @@ public class AdminController {
     }
 
     @Operation(summary = "This endpoint is used to delete a contest by contestname")
-    @DeleteMapping("/deleteContest/{contestName}")
+    @DeleteMapping("/deleteContestByContestName/{contestName}")
     public ResponseEntity<?> deleteContestByContestName(@PathVariable String contestName){
         Map<String,Integer> response = new HashMap<>();
         response.put("status",0);
@@ -128,6 +130,20 @@ public class AdminController {
         catch (Exception e){
             return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Operation(summary = "This API Endpoint is ued to delete the contest based on contest id by the admin")
+    @DeleteMapping("/deleteContestByContestId/{contestId}")
+    public ResponseEntity<?> deleteContestByContestId(@PathVariable String contestId){
+        ObjectId contestObjectId = new ObjectId(contestId);
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        boolean isDeleted = contestService.deleteContest(contestObjectId);
+        if(isDeleted){
+            returnResponse.put("status",1);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
     }
 
 }

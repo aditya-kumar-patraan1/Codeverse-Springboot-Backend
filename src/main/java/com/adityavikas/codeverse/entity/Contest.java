@@ -1,6 +1,8 @@
 package com.adityavikas.codeverse.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
@@ -19,6 +21,7 @@ import java.util.List;
 public class Contest {
 
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId contestId;
 
     @NonNull

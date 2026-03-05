@@ -39,8 +39,15 @@ public class ContestService {
         return true;
     }
 
-    public void deleteContest(ObjectId id){
-        contestRepository.deleteById(id);
+    public boolean deleteContest(ObjectId id){
+        try{
+            contestRepository.deleteById(id);
+            return true;
+        }
+        catch (Exception e){
+            logger.error("contest not deleted due to error",e);
+            return false;
+        }
     }
 
     public boolean deleteContestByContestName(String contestName){
