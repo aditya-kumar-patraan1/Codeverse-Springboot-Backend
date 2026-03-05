@@ -1,10 +1,7 @@
 package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.dto.LoginUserDTO;
 import com.adityavikas.codeverse.dto.UserDTO;
-import com.adityavikas.codeverse.entity.Problem;
-import com.adityavikas.codeverse.entity.ProblemDetails;
-import com.adityavikas.codeverse.entity.User;
-import com.adityavikas.codeverse.entity.UserProfile;
+import com.adityavikas.codeverse.entity.*;
 import com.adityavikas.codeverse.repository.UserRepository;
 import com.adityavikas.codeverse.services.*;
 import com.adityavikas.codeverse.utils.JwtUtils;
@@ -43,6 +40,10 @@ public class PublicController {
 
     @Autowired
     private UserProfileService userProfileService;
+
+
+    @Autowired
+    private ContestService contestService;
 
     @Autowired
     private ProblemService problemService;
@@ -159,6 +160,16 @@ public class PublicController {
             return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }
         return new ResponseEntity<>(returnResponse,HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "This API Endpoint is used to fetch all the contests")
+    @GetMapping("/fetchAll")
+    public ResponseEntity<?> fetchAll(){
+        List<Contest> allContests = contestService.getAllContest();
+        if(allContests!=null && !allContests.isEmpty()){
+            return new ResponseEntity<>(allContests,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
     }
 
 

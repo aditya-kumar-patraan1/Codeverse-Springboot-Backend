@@ -4,14 +4,15 @@ import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.repository.ContestRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -26,7 +27,7 @@ public class ContestService {
     @Autowired
     private UserService userService;
 
-
+    private static final Logger logger = LoggerFactory.getLogger(ContestService.class);
 
     public boolean addContest(Contest contest){
         try{
@@ -93,6 +94,15 @@ public class ContestService {
         else{
             log.error("Contest does'nt exist");
             return false;
+        }
+    }
+
+    public List<Contest> getAllContest(){
+        try{
+            return contestRepository.findAll();
+        } catch (Exception e) {
+            logger.error("All contests not fetched due to error",e);
+            return List.of();
         }
     }
 
