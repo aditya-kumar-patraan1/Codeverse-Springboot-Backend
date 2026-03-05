@@ -163,7 +163,7 @@ public class PublicController {
     }
 
     @Operation(summary = "This API Endpoint is used to fetch all the contests")
-    @GetMapping("/fetchAll")
+    @GetMapping("/fetchAllContest")
     public ResponseEntity<?> fetchAll(){
         List<Contest> allContests = contestService.getAllContest();
         if(allContests!=null && !allContests.isEmpty()){
