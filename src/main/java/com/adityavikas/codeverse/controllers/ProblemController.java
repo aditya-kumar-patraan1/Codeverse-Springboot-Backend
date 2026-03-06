@@ -27,10 +27,10 @@ public class ProblemController {
         try{
             Problem problem = new Problem();
             problem.setSno(problemDTO.getSno());
-            problem.setTitle(problem.getTitle());
+            problem.setTitle(problemDTO.getTitle());
             problem.setSlug(problemDTO.getSlug());
             problem.setTopicTags(problemDTO.getTopicTags());
-            problem.setDifficulty(problem.getDifficulty());
+            problem.setDifficulty(problemDTO.getDifficulty());
             problem.setAcceptanceRate(problemDTO.getAcceptanceRate());
             problem.setInputType(problemDTO.getInputType());
             problem.setReturnType(problemDTO.getReturnType());
@@ -68,8 +68,9 @@ public class ProblemController {
     public ResponseEntity<?> deleteProblem(@PathVariable String problemId){
         boolean isDeleted = problemService.deleteCompleteProblem(problemId);
         Map<String,Integer> returnResponse = new HashMap<>();
-
+        returnResponse.put("status",0);
         if(isDeleted){
+            returnResponse.put("status",1);
             return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }
         return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
