@@ -65,4 +65,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public boolean banUser(ObjectId userId){
+        try{
+            userRepository.deleteById(userId);
+            return true;
+        } catch (Exception e) {
+            log.error("User not banned due to the error",e);
+            return false;
+        }
+    }
+
 }

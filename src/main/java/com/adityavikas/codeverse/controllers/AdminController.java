@@ -4,10 +4,12 @@ import com.adityavikas.codeverse.dto.AdminDTO;
 import com.adityavikas.codeverse.dto.AllUserAPIResponseDTO;
 import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
+import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.services.ContestService;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/admin")
-@Tag(name="All Admin API's",description = "this is the admin controller where only admin can do the neccessary change to our codeverse system application not used is allowed.")
+@Tag(name="All Admin API's",description = "this is the admin controller where only admin can do the necessary change to our codeverse system application not used is allowed.")
 public class AdminController {
 
     @Autowired
@@ -34,6 +36,9 @@ public class AdminController {
 
     @Autowired
     private ContestService contestService;
+
+    @Autowired
+    private Middlewares middlewares;
 
     @Operation(summary = "this is used to create admin (Note: only a admin can create other admin)")
     // only one admin can create other admin not user is permitted to call this you can try it by yourself
@@ -132,7 +137,7 @@ public class AdminController {
         }
     }
 
-    @Operation(summary = "This API Endpoint is ued to delete the contest based on contest id by the admin")
+    @Operation(summary = "This API Endpoint is used to delete the contest based on contest id by the admin")
     @DeleteMapping("/deleteContestByContestId/{contestId}")
     public ResponseEntity<?> deleteContestByContestId(@PathVariable String contestId){
         ObjectId contestObjectId = new ObjectId(contestId);
@@ -144,6 +149,27 @@ public class AdminController {
             return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }
         return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+    }
+
+    @Operation(summary = "This API Enpoint is used to ban the user")
+    @DeleteMapping("/banUser")
+    public ResponseEntity<?> banUser(HttpServletRequest request){
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+
+        try{
+            String authorizationHeader = request.getHeader("Authorization");
+            String userId = middlewares.getUserIdByJwt(authorizationHeader);
+            boolean isBanned = userService.banUser(new ObjectId(userId));
+            if(isBanned){
+                returnResponse.put("status",1);
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
+            return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
