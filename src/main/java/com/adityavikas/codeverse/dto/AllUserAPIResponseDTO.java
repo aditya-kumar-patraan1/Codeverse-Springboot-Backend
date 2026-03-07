@@ -15,5 +15,6 @@ public class AllUserAPIResponseDTO {
     private String email;
     private boolean isAdmin;
     private String joined;
+    private boolean isBan;
 
 }

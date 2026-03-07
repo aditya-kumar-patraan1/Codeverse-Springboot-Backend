@@ -35,6 +35,7 @@ public class User {
     // provider can be LOCAL or GOOGLE
     private List<String> provider = new ArrayList<>();
 //    @DBRef
+    private boolean isBan = false;
     private List<ObjectId> registeredContest = new ArrayList<>();
     private LocalDateTime created_at;
 
