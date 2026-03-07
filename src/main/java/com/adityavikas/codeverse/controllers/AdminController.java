@@ -151,7 +151,7 @@ public class AdminController {
         return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
     }
 
-    @Operation(summary = "This API Enpoint is used to ban the user")
+    @Operation(summary = "This API Endpoint is used to ban the user")
     @DeleteMapping("/banUser")
     public ResponseEntity<?> banUser(HttpServletRequest request){
         Map<String,Integer> returnResponse = new HashMap<>();
