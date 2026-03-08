@@ -71,7 +71,7 @@ public class AdminController {
                 LocalDateTime dt = user.getCreated_at();
                 String month = dt.getDayOfMonth() + " " + dt.getMonth().toString() + ", " + dt.getYear();
                 boolean isAdmin = user.getRoles().stream().anyMatch(u -> "ADMIN".equalsIgnoreCase(u));
-                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), isAdmin,month, user.isBan()));
+                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), isAdmin,month, user.isBan(),user.getUserId().toString()));
             }
             if(allUsers.isEmpty()){
                 return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
@@ -151,16 +151,16 @@ public class AdminController {
         return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
     }
 
-    @Operation(summary = "This API Endpoint is used to ban the user")
-    @DeleteMapping("/banUser/{bannedUserId}")
-    public ResponseEntity<?> banUser(HttpServletRequest request,@PathVariable String bannedUserId){
+    @Operation(summary = "This API Endpoint is used to ban/unban the user")
+    @DeleteMapping("/banUnbanUser/{bannedUserId}")
+    public ResponseEntity<?> banOrUnbanUser(HttpServletRequest request,@PathVariable String bannedUserId){
 
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
 
         try{
             User user = userService.getUserById(bannedUserId);
-            boolean isBanned = userService.banUser(user);
+            boolean isBanned = userService.banOrUnbanUser(user);
             if(isBanned){
                 returnResponse.put("status",1);
                 return new ResponseEntity<>(returnResponse,HttpStatus.OK);

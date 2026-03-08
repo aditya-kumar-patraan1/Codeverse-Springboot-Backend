@@ -65,9 +65,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public boolean banUser(User user){
+    public boolean banOrUnbanUser(User user){
         try{
-            user.setBan(true);
+            user.setBan(!user.isBan());
             userRepository.save(user);
             return true;
         } catch (Exception e) {
