@@ -105,8 +105,14 @@ public class PublicController {
         user.setPassword(userDTO.getPassword());
         Map<String,Object> returnResponse = new HashMap<>();
         returnResponse.put("jwtToken","");
+        returnResponse.put("status",0);
         try{
-            ObjectId Id = userRepository.findByUsername(user.getUsername()).getUserId();
+            User dbUser = userRepository.findByUsername(user.getUsername());
+            if(dbUser.isBan()){
+                returnResponse.put("status",-1);
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
+            ObjectId Id = dbUser.getUserId();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(Id,user.getPassword())
             );
