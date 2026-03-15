@@ -62,7 +62,6 @@ public class PublicController {
 
     @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
-    @Transactional
     public ResponseEntity<?> saveUser(@RequestBody LoginUserDTO userDTO){
         Map<String,Integer> returnStatus = new HashMap<>();
         returnStatus.put("status",0);

@@ -2,10 +2,12 @@ package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.UserProfile;
 import com.adityavikas.codeverse.repository.UserProfileRepository;
+import com.adityavikas.codeverse.repository.UserRepository;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -14,6 +16,9 @@ public class UserProfileService {
 
     @Autowired
     private UserProfileRepository userProfileRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -79,6 +84,19 @@ public class UserProfileService {
 
     public UserProfile getUserProfile(String username){
         return userProfileRepository.findByUsername(username);
+    }
+
+    @Transactional
+    public boolean deleteUserProfile(String username){
+        try{
+            userProfileRepository.deleteByUsername(username);
+            userRepository.deleteByUsername(username);
+            return true;
+        }
+        catch(Exception e){
+            log.error("User profile not delete due to error",e);
+            return false;
+        }
     }
 
 }

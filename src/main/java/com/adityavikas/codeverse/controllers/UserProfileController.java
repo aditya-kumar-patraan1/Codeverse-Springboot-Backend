@@ -85,4 +85,19 @@ public class UserProfileController {
         }
     }
 
+    @DeleteMapping("/delete")
+    @Operation(summary = "This API Endpoint is used to delete the userprofile by user itself")
+    public ResponseEntity<?> deleteUserProfile(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        String username = middlewares.getUserNameByJwt(authorizationHeader);
+        boolean isProfileDeleted = userProfileService.deleteUserProfile(username);
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        if(isProfileDeleted){
+            returnResponse.put("status",1);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+    }
+
 }
