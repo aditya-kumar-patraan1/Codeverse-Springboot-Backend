@@ -10,21 +10,17 @@ import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/admin")
@@ -39,6 +35,7 @@ public class AdminController {
 
     @Autowired
     private Middlewares middlewares;
+
 
     @Operation(summary = "this is used to create admin (Note: only a admin can create other admin)")
     // only one admin can create other admin not user is permitted to call this you can try it by yourself
@@ -171,5 +168,4 @@ public class AdminController {
             return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
         }
     }
-
 }
