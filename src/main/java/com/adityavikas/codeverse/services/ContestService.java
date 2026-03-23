@@ -65,9 +65,9 @@ public class ContestService {
         }
     }
 
-    public boolean updateContest(String contestName,Contest contest){
+    public boolean updateContest(ObjectId contestId,Contest contest){
         try{
-            Contest oldContest = contestRepository.findContestByContestName(contestName);
+            Contest oldContest = contestRepository.findById(contestId).orElse(null);
             if(oldContest!=null){
                 if(!contest.getContestName().isEmpty()){
                     oldContest.setContestName(contest.getContestName());
