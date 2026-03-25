@@ -16,6 +16,7 @@ public class Testcase {
     private boolean isHidden;    //is hidden testcase exists true/false
     private String input;
     private String output;
+    private String explanation = "";
 
 
 }

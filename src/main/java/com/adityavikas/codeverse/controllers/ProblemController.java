@@ -26,23 +26,23 @@ public class ProblemController {
     public ResponseEntity<?> addProblem(@RequestBody ProblemDTO problemDTO){
         try{
             Problem problem = new Problem();
-            problem.setSno(problemDTO.getSno());
-            problem.setTitle(problemDTO.getTitle());
-            problem.setSlug(problemDTO.getSlug());
-            problem.setTopicTags(problemDTO.getTopicTags());
-            problem.setDifficulty(problemDTO.getDifficulty());
-            problem.setAcceptanceRate(problemDTO.getAcceptanceRate());
-            problem.setInputType(problemDTO.getInputType());
-            problem.setReturnType(problemDTO.getReturnType());
-            problem.setStatus(problemDTO.isStatus());
-            problem.setFunctionName(problemDTO.getFunctionName());
-            Boolean isSaved = problemService.saveProblem(problem);
-            if(isSaved){
+//            problem.setSno(problemDTO.getSno());
+//            problem.setTitle(problemDTO.getTitle());
+//            problem.setSlug(problemDTO.getSlug());
+//            problem.setTopicTags(problemDTO.getTopicTags());
+//            problem.setDifficulty(problemDTO.getDifficulty());
+//            problem.setAcceptanceRate(problemDTO.getAcceptanceRate());
+//            problem.setInputType(problemDTO.getInputType());
+//            problem.setReturnType(problemDTO.getReturnType());
+//            problem.setStatus(problemDTO.isStatus());
+//            problem.setFunctionName(problemDTO.getFunctionName());
+//            Boolean isSaved = problemService.saveProblem(problem);
+//            if(isSaved){
                 return new ResponseEntity<>("Problem added",HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity<>("Problem not added", HttpStatus.BAD_REQUEST);
-            }
+//            }
+//            else{
+//                return new ResponseEntity<>("Problem not added", HttpStatus.BAD_REQUEST);
+//            }
         } catch (Exception e) {
             return new ResponseEntity<>("Problem not added", HttpStatus.BAD_REQUEST);
         }
