@@ -1,8 +1,13 @@
 package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.dto.ProblemDTO;
+import com.adityavikas.codeverse.dto.TestcaseDTO;
 import com.adityavikas.codeverse.entity.Problem;
+import com.adityavikas.codeverse.entity.ProblemDetails;
+import com.adityavikas.codeverse.entity.Testcase;
+import com.adityavikas.codeverse.services.ProblemDetailService;
 import com.adityavikas.codeverse.services.ProblemService;
+import com.adityavikas.codeverse.services.TestcaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.types.ObjectId;
@@ -12,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/problem")
@@ -24,27 +30,19 @@ public class ProblemController {
     @Operation(summary = "This is used to add problem by admin")
     @PostMapping("/add")
     public ResponseEntity<?> addProblem(@RequestBody ProblemDTO problemDTO){
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
         try{
-            Problem problem = new Problem();
-//            problem.setSno(problemDTO.getSno());
-//            problem.setTitle(problemDTO.getTitle());
-//            problem.setSlug(problemDTO.getSlug());
-//            problem.setTopicTags(problemDTO.getTopicTags());
-//            problem.setDifficulty(problemDTO.getDifficulty());
-//            problem.setAcceptanceRate(problemDTO.getAcceptanceRate());
-//            problem.setInputType(problemDTO.getInputType());
-//            problem.setReturnType(problemDTO.getReturnType());
-//            problem.setStatus(problemDTO.isStatus());
-//            problem.setFunctionName(problemDTO.getFunctionName());
-//            Boolean isSaved = problemService.saveProblem(problem);
-//            if(isSaved){
-                return new ResponseEntity<>("Problem added",HttpStatus.OK);
-//            }
-//            else{
-//                return new ResponseEntity<>("Problem not added", HttpStatus.BAD_REQUEST);
-//            }
+            boolean isProblemAdded = problemService.addEntireProblem(problemDTO);
+            if(isProblemAdded){
+                returnResponse.put("status",1);
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(returnResponse  , HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>("Problem not added", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(returnResponse, HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -10,20 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Data
-class TestcaseDTO{
-    private boolean isHidden;    //is hidden testcase exists true/false
-    private String input;
-    private String output;
-    private String explanation = "";
-}
+
 
 @Data
 public class ProblemDTO {
 
     //to be store in problem entity
     @Indexed(unique = true)
-    private int sno = 101;   // I will change it later on
+    private int sno;   // I will change it later on
     @NotNull
     private String title;
     private String slug;
