@@ -5,4 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface TestcaseRepository extends MongoRepository<Testcase, ObjectId> {
+
+    void deleteByProblemId(ObjectId problemId);
+
 }

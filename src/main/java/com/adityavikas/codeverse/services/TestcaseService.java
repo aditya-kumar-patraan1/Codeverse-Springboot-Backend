@@ -31,7 +31,7 @@ public class TestcaseService {
     public boolean deleteTestcase(String problemId){
         ObjectId objectId = new ObjectId(problemId);
         try{
-            testcaseRepository.deleteById(objectId);
+            testcaseRepository.deleteByProblemId(objectId);
             return true;
         }
         catch (Exception e) {

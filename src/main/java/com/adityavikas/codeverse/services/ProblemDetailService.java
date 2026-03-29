@@ -41,7 +41,7 @@ public class ProblemDetailService {
     public boolean deleteProblemDetails(String problemId){
         ObjectId objectId = new ObjectId(problemId);
         try{
-            problemDetailRepository.deleteById(objectId);
+            problemDetailRepository.deleteByProblemId(objectId);
             return true;
         }
         catch(Exception e){

@@ -7,5 +7,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface ProblemDetailRepository extends MongoRepository<ProblemDetails,ObjectId> {
 
     ProblemDetails findByProblemId(ObjectId problemId);
+    void deleteByProblemId(ObjectId problemId);
 
 }
