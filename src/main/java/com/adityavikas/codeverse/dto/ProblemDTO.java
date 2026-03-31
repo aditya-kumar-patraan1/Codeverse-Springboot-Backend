@@ -41,5 +41,4 @@ public class ProblemDTO {
     private Map<String,String> timeComplexity = new HashMap<>();
     private Map<String,String> spaceComplexity = new HashMap<>();
     List<String> algorithmSteps = new ArrayList<>();
-
 }

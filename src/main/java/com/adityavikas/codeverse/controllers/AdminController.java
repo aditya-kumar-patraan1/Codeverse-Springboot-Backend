@@ -6,6 +6,7 @@ import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.services.ContestService;
+import com.adityavikas.codeverse.services.UserProfileService;
 import com.adityavikas.codeverse.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,6 +37,8 @@ public class AdminController {
     @Autowired
     private Middlewares middlewares;
 
+    @Autowired
+    private UserProfileService userProfileService;
 
     @Operation(summary = "this is used to create admin (Note: only a admin can create other admin)")
     // only one admin can create other admin not user is permitted to call this you can try it by yourself
@@ -68,7 +71,7 @@ public class AdminController {
                 LocalDateTime dt = user.getCreated_at();
                 String month = dt.getDayOfMonth() + " " + dt.getMonth().toString() + ", " + dt.getYear();
                 boolean isAdmin = user.getRoles().stream().anyMatch(u -> "ADMIN".equalsIgnoreCase(u));
-                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), isAdmin,month, user.isBan(),user.getUserId().toString()));
+                response.add(new AllUserAPIResponseDTO(user.getUsername(), user.getEmail(), isAdmin,month, user.isBan(),user.getUserId(),userProfileService.getAvatarLinkByUsername(user.getUsername())));
             }
             if(allUsers.isEmpty()){
                 return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);

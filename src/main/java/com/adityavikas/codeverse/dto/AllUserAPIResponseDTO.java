@@ -1,8 +1,11 @@
 package com.adityavikas.codeverse.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +19,8 @@ public class AllUserAPIResponseDTO {
     private boolean isAdmin;
     private String joined;
     private boolean isBan;
-    private String userId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId userId;
+    private String avatarLink = "";
 
 }

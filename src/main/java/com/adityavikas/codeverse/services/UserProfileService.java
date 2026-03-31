@@ -99,4 +99,14 @@ public class UserProfileService {
         }
     }
 
+    public String getAvatarLinkByUsername(String username){
+        try{
+            return userProfileRepository.findByUsername(username).getAvatarLink();
+        }
+        catch(Exception e){
+            log.error("No Avatar Link found with username : ",username);
+            return "";
+        }
+    }
+
 }
