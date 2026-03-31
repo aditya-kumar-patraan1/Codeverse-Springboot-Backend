@@ -88,13 +88,14 @@ public class ContestService {
     }
 
     @Transactional
-    public boolean registerInContest(String contestName,String authorizationHeader){
-        Contest contest = contestRepository.findContestByContestName(contestName);
+    public boolean registerInContest(String contestId,String authorizationHeader){
+        ObjectId contestObjectId = new ObjectId(contestId);
+        Contest contest = contestRepository.findById(contestObjectId).orElse(null);
         if(contest!=null){
             User user = middlewares.getUserByJwt(authorizationHeader);
             contest.getRegisteredUsers().add(user.getUserId());
             contestRepository.save(contest);
-            user.getRegisteredContest().add(contest.getContestId());
+            user.getRegisteredContest().add(contestObjectId);
             userService.saveUser(user);
             return true;
         }

@@ -30,13 +30,13 @@ public class ContestController {
     private ContestService contestService;
 
     @Operation(summary = "This API endpoint is used to register into contest by users")
-    @PostMapping("/register/{contestName}")
-    public ResponseEntity<?> registerContest(HttpServletRequest request,@PathVariable String contestName){
+    @PostMapping("/register/{contestId}")
+    public ResponseEntity<?> registerContest(HttpServletRequest request,@PathVariable String contestId){
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
         try{
             String authorizationHeader = request.getHeader("authorization");
-            boolean isConnected = contestService.registerInContest(contestName, authorizationHeader);
+            boolean isConnected = contestService.registerInContest(contestId, authorizationHeader);
             if(isConnected){
                 returnResponse.put("status",1);
                 return new ResponseEntity<>(returnResponse,HttpStatus.OK);
