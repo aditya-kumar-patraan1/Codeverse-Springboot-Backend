@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
+import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.repository.ContestRepository;
 import com.adityavikas.codeverse.services.ContestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,9 @@ public class ContestController {
     private ContestRepository contestRepository;
 
     @Autowired
+    private Middlewares middlewares;
+
+    @Autowired
     private ContestService contestService;
 
     @Operation(summary = "This API endpoint is used to register into contest by users")
@@ -46,6 +50,26 @@ public class ContestController {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Operation(summary = "This API Endpoint is used to check whether the current user registered in the contest or not")
+    @GetMapping("/isRegisterContest/{contestId}")
+    public ResponseEntity<?> isRegisterContestByUser(HttpServletRequest request,@PathVariable String contestId){
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        try{
+            String authorizationHeader = request.getHeader("Authorization");
+            String userId = middlewares.getUserIdByJwt(authorizationHeader);
+            boolean isRegistered = contestService.isRegisterInContest(contestId,userId);
+            if(isRegistered){
+                returnResponse.put("status",1);
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -4,6 +4,7 @@ import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.repository.ContestRepository;
+import com.adityavikas.codeverse.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -20,6 +22,9 @@ public class ContestService {
 
     @Autowired
     private ContestRepository contestRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private Middlewares middlewares;
@@ -111,6 +116,24 @@ public class ContestService {
         } catch (Exception e) {
             logger.error("All contests not fetched due to error",e);
             return List.of();
+        }
+    }
+
+    public boolean isRegisterInContest(String contestId,String userId){
+        try{
+            User user = userRepository.findById(new ObjectId(userId)).orElse(null);
+
+            boolean isRegistered = false;
+
+            if(user!=null){
+                isRegistered = user.getRegisteredContest().stream().anyMatch(conn -> conn.equals(new ObjectId(contestId)));
+            }
+            if(isRegistered) return true;
+
+            return false;
+        } catch (Exception e) {
+            log.error("Something wrong happened while searching whether user registered in contest or not");
+            return false;
         }
     }
 
