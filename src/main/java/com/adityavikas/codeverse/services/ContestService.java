@@ -119,6 +119,7 @@ public class ContestService {
         }
     }
 
+    
     public boolean isRegisterInContest(String contestId,String userId){
         try{
             User user = userRepository.findById(new ObjectId(userId)).orElse(null);
