@@ -10,7 +10,6 @@ spring.data.mongodb.auto-index-creation=true
 
 Having:
 
-
 1. Creation of Admin
 2. Creation User
 3. Getting all Users
