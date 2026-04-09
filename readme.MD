@@ -6,10 +6,10 @@ spring.data.mongodb.database=<dbname>
 spring.data.mongodb.auto-index-creation=true
 ```
 
-
 ![Swagger UI](https://github.com/aditya-kumar-patraan1/Codeverse-Springboot-Backend/blob/main/src/main/resources/static/swagger.png)
 
 Having:
+
 
 1. Creation of Admin
 2. Creation User
