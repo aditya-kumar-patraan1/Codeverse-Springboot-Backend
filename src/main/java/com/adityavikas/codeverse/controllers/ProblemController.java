@@ -46,7 +46,7 @@ public class ProblemController {
         }
     }
 
-    @Operation(summary = "This is used to fetch all Users")
+    @Operation(summary = "This is used to fetch all Problems")
     @GetMapping("/fetch")
     public ResponseEntity<?> fetchAllProblems(){
         try{

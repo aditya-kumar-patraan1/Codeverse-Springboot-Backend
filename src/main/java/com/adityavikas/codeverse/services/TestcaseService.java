@@ -6,7 +6,10 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TestcaseService {
@@ -37,6 +40,17 @@ public class TestcaseService {
         catch (Exception e) {
             logger.error("testcase not deleted");
             return false;
+        }
+    }
+
+    public List<Testcase> fetchTestcase(String problemId){
+        ObjectId objectProblemId = new ObjectId(problemId);
+        try{
+            return testcaseRepository.findAllByProblemId(objectProblemId);
+        }
+        catch(Exception e){
+            logger.error("Testcase not found");
+            return null;
         }
     }
 
