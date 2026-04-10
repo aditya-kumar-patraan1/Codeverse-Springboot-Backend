@@ -243,4 +243,20 @@ public class PublicController {
         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
 
     }
+
+    @Operation(summary = "This is used to fetch all Problems")
+    @GetMapping("/fetchAllProblem")
+    public ResponseEntity<?> fetchAllProblems(){
+        try{
+            List<Problem> allProblems = problemService.fetchAllProblems();
+            if(allProblems.isEmpty()){
+                return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(allProblems,HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

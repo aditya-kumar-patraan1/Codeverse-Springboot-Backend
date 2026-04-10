@@ -46,21 +46,6 @@ public class ProblemController {
         }
     }
 
-    @Operation(summary = "This is used to fetch all Problems")
-    @GetMapping("/fetch")
-    public ResponseEntity<?> fetchAllProblems(){
-        try{
-            List<Problem> allProblems = problemService.fetchAllProblems();
-            if(allProblems.isEmpty()){
-                return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(allProblems,HttpStatus.OK);
-        }
-        catch(Exception e){
-            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @Operation(summary = "This API Endpoint is used to delete the entire problem(including the testcase,solution,editorial,description/details)")
     @DeleteMapping("/deleteEntireProblem/{problemId}")
     public ResponseEntity<?> deleteProblem(@PathVariable String problemId){
