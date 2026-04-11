@@ -228,6 +228,8 @@ public class PublicController {
                 TestcaseDTO testcaseDTO = new TestcaseDTO();
                 testcaseDTO.setInput(testcase.getInput());
                 testcaseDTO.setHidden(testcase.isHidden());
+                // output added
+                testcaseDTO.setOutput(testcase.getOutput());
                 testcaseDTO.setExplanation(testcase.getExplanation());
                 listOfTestcase.add(testcaseDTO);
             }
