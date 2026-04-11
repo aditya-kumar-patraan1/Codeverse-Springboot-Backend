@@ -19,7 +19,8 @@ public class Submission {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId submissionId;
 
-    @Indexed(unique = true)
+
+//    @Indexed(unique = true)
     private String username = "";
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId problemId;
