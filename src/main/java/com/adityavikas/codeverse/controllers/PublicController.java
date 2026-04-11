@@ -181,7 +181,7 @@ public class PublicController {
 
     @Operation(summary = "This API Endpoint is used to access Entire Problem")
     @GetMapping("/getEntireProblem/{problemId}")
-    public ResponseEntity<?> getEntireProblem(String problemId){
+    public ResponseEntity<?> getEntireProblem(@PathVariable String problemId){
         Problem problem = problemService.fetchProblem(problemId).orElse(null);
         ProblemDetails problemDetails = problemDetailService.fetchProblemDetail(problemId);
         List<Testcase> testcases = testcaseService.fetchTestcase(problemId);
