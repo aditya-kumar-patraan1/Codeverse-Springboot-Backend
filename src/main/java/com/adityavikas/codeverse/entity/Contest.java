@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
@@ -32,6 +33,21 @@ public class Contest {
     private int duration;
 //    @DBRef
     private List<ObjectId> registeredUsers = new ArrayList<>();
+    @Transient
     private String contestStatus;
+
+    @JsonGetter("contestStatus")
+    public String getContestStatus(){
+        LocalDateTime now=LocalDateTime.now();
+        LocalDateTime endTime=startTime.plusMinutes(duration);
+
+        if(now.isBefore(startTime)){
+            return "Upcoming";
+        }else if(now.isAfter(startTime) && now.isBefore(endTime)){
+            return "Ongoing";
+        }else{
+            return "Finished";
+        }
+    }
 
 }
