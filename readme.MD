@@ -7,7 +7,7 @@ spring.data.mongodb.auto-index-creation=true
 ```
 
 ![Swagger UI](https://github.com/aditya-kumar-patraan1/Codeverse-Springboot-Backend/blob/main/src/main/resources/static/swagger.png)
- 
+
 
 Having:
 
@@ -20,3 +20,4 @@ Having:
 7. Integration of OAuth2
 8. Integration of swagger
 9. Added mongo relationship between collections
+10. Dashboard handling
