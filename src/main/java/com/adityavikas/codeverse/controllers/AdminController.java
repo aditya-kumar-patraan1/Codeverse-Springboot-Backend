@@ -156,7 +156,7 @@ public class AdminController {
     public ResponseEntity<?> banOrUnbanUser(HttpServletRequest request,@PathVariable String bannedUserId){
 
         Map<String,Integer> returnResponse = new HashMap<>();
-        returnResponse.put("status",1);
+        returnResponse.put("status",0);
 
         try{
             User user = userService.getUserById(bannedUserId);
