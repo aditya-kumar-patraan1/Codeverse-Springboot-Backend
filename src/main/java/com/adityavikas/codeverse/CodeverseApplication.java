@@ -17,7 +17,7 @@ public class CodeverseApplication {
 
 	public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(CodeverseApplication.class,args);
-//        System.out.println(context.getEnvironment());
+        System.out.println(context.getEnvironment());
   	}
 
     @Bean
