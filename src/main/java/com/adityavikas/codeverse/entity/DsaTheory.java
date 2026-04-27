@@ -1,14 +1,22 @@
 package com.adityavikas.codeverse.entity;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@Document(collection = "DsaTheory")
 public class DsaTheory {
 
-    private String parentTitleId;
-    private String title;
-    private String level;
-    private String icon;
+    private String definition;
+    private String analogy;
+    private List<String> coreOperations = new ArrayList<>();
+    private String spaceComplexity;
+    private String timeComplexity;
+
+
 
 
 }

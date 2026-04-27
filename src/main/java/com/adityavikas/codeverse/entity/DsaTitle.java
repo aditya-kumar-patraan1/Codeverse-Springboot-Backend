@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document("DsaTitle")
+@Document(collection = "DsaTitle")
 public class DsaTitle {
 
     private String title;
