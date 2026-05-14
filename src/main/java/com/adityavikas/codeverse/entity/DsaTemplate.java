@@ -11,16 +11,15 @@ import java.util.List;
 @Document(collection = "DsaTemplate")
 public class DsaTemplate {
 
-
-    private String templateName;
-    private ObjectId titleId;
+    private String parentTitle;
+    private ObjectId title;
     private String templateId;
-    private List<String> practiceProblemLinks = new ArrayList<>();
-    private List<String> youtubeLinks = new ArrayList<>();
+    private List<String> problemLinks = new ArrayList<>();
+    private List<String> videoLinks = new ArrayList<>();
     private boolean status;
     private String cpp;
     private String java;
-    private String js;
+    private String javascript;
     private String python;
 
 }
