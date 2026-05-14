@@ -6,7 +6,6 @@ import com.adityavikas.codeverse.entity.Problem;
 import com.adityavikas.codeverse.entity.ProblemDetails;
 import com.adityavikas.codeverse.entity.Testcase;
 import com.adityavikas.codeverse.repository.ProblemRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
