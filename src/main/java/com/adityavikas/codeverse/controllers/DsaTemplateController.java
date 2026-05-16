@@ -20,11 +20,11 @@ public class DsaTemplateController {
     @Autowired
     private DsaTemplateService dsaTemplateService;
 
-    @PostMapping("/addTemplate/{parentTemplateId}")
+    @PostMapping("/addTemplate/{parentId}")
     @Operation(summary = "This endpoint is used to add the DSA Template by EDITOR of Codeverse")
-    public ResponseEntity<?> addDsaTemplate(@PathVariable String parentTemplateId, @RequestBody DsaTemplate dsaTemplate){
+    public ResponseEntity<?> addDsaTemplate(@PathVariable String parentId, @RequestBody DsaTemplate dsaTemplate){
 
-        dsaTemplate.setParentTemplateId(parentTemplateId);
+        dsaTemplate.setParentId(parentId);
 
         boolean isTemplateAdded = dsaTemplateService.addDsaTemplate(dsaTemplate);
         Map<String,Integer> returnResponse = new HashMap<>();

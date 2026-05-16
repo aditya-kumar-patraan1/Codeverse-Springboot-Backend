@@ -12,6 +12,9 @@ import java.util.List;
 public class DsaTitle {
 
     private String title;
-    private List<ObjectId> listOfIds = new ArrayList<>();
+    private String difficulty;
+    private String description;
+    private String titleId;
+    private List<ObjectId> listOfTemplateIds = new ArrayList<>();
 
 }

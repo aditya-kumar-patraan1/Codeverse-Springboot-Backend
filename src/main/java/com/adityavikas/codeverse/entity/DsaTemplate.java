@@ -11,7 +11,7 @@ import java.util.List;
 @Document(collection = "DsaTemplate")
 public class DsaTemplate {
 
-    private String parentTemplateId;
+    private String parentId;
     private String title;
     private String templateId;
     private List<String> problemLinks = new ArrayList<>();
