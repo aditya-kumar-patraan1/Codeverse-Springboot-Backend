@@ -34,12 +34,12 @@ public class DsaTemplateController {
     @Operation(summary = "This endpoint is used to add the DSA Template by EDITOR of Codeverse")
     public ResponseEntity<?> addDsaTemplate(@PathVariable String parentId, @RequestBody DsaTemplate dsaTemplate){
 
+        dsaTemplate.setParentId(parentId);
         ObjectId templateId = dsaTemplateService.addDsaTemplate(dsaTemplate);
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
 
         if(templateId!=null){
-            dsaTemplate.setParentId(parentId);
 
             DsaTitle dsaTitle = dsaTitleService.findByTitleId(parentId);
             dsaTitle.getListOfTemplateIds().add(templateId);

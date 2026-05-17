@@ -13,7 +13,7 @@ import java.util.List;
 @Document(collection = "DsaTemplate")
 public class DsaTemplate {
 
-    private String parentId;
+    private String parentId = "";
     private String title;
 
     @Id
