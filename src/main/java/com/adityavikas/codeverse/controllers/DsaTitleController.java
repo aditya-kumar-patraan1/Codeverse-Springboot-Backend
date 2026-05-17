@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.entity.DsaTitle;
 import com.adityavikas.codeverse.services.DsaTitleService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class DsaTitleController {
     private DsaTitleService dsaTitleService;
 
     @PostMapping("/addTitle")
+    @Operation(summary = "This endpoint is used to add the DSA Title by EDITOR of Codeverse")
+
     public ResponseEntity<?> addDsaTitle(@RequestBody DsaTitle dsaTitle){
         boolean isTemplateAdded = dsaTitleService.addDsaTitle(dsaTitle);
 
