@@ -1,0 +1,38 @@
+package com.adityavikas.codeverse.controllers;
+
+import com.adityavikas.codeverse.entity.DsaTitle;
+import com.adityavikas.codeverse.services.DsaTitleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/DsaTitle")
+public class DsaTitleController {
+
+    @Autowired
+    private DsaTitleService dsaTitleService;
+
+    @PostMapping("/addTitle")
+    public ResponseEntity<?> addDsaTitle(@RequestBody DsaTitle dsaTitle){
+        boolean isTemplateAdded = dsaTitleService.addDsaTitle(dsaTitle);
+
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+
+        if(isTemplateAdded){
+            returnResponse.put("status",1);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+    }
+
+}

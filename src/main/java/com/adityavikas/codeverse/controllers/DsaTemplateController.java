@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/DsaTemplateController")
+@RequestMapping("/DsaTemplate")
 @Tag(name="Dsa Template API Controller",description = "This is the controller added for handling the operation related to DsaTemplate")
 public class DsaTemplateController {
 
@@ -25,7 +25,6 @@ public class DsaTemplateController {
     public ResponseEntity<?> addDsaTemplate(@PathVariable String parentId, @RequestBody DsaTemplate dsaTemplate){
 
         dsaTemplate.setParentId(parentId);
-
         boolean isTemplateAdded = dsaTemplateService.addDsaTemplate(dsaTemplate);
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
