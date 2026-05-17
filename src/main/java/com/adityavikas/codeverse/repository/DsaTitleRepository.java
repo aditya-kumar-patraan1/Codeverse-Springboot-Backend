@@ -5,4 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface DsaTitleRepository extends MongoRepository<DsaTitle, ObjectId> {
+
+    DsaTitle findByTitleId(String titleId);
+
 }

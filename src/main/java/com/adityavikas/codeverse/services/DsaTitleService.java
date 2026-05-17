@@ -25,4 +25,13 @@ public class DsaTitleService {
         }
     }
 
+    public DsaTitle findByTitleId(String titleId){
+        try{
+            return dsaTitleRepository.findByTitleId(titleId);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
 }

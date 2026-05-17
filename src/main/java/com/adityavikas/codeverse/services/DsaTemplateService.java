@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.DsaTemplate;
 import com.adityavikas.codeverse.repository.DsaTemplateRepository;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,13 @@ public class DsaTemplateService {
 
     private static final Logger logger = LoggerFactory.getLogger(DsaTemplateService.class);
 
-    public boolean addDsaTemplate(DsaTemplate dsaTemplate){
+    public ObjectId addDsaTemplate(DsaTemplate dsaTemplate){
         try{
-            dsaTemplateRepository.save(dsaTemplate);
-            return true;
+            return dsaTemplateRepository.save(dsaTemplate).getId();
         }
         catch (Exception e){
             logger.error("Template not added");
-            return false;
+            return null;
         }
     }
 
