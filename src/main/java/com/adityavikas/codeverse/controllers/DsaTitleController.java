@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/DsaTitle")
-@Tag(name = "This Controller is used to handle all the Operations related to DSA Title of Codeverse Website")
+@Tag(name = "DSA Title Controller",description = "This Controller is used to handle all the Operations related to DSA Title of Codeverse Website")
 public class DsaTitleController {
 
     @Autowired
