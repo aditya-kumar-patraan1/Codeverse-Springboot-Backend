@@ -3,6 +3,7 @@ package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.entity.DsaTitle;
 import com.adityavikas.codeverse.services.DsaTitleService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/DsaTitle")
+@Tag(description = "This Controller is used to handle all the Operations related to DSA Title of Codeverse Website")
 public class DsaTitleController {
 
     @Autowired
