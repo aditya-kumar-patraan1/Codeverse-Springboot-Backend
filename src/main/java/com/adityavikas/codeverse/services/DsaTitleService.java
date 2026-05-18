@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DsaTitleService {
 
@@ -31,6 +34,16 @@ public class DsaTitleService {
         }
         catch (Exception e){
             return null;
+        }
+    }
+
+    public List<DsaTitle> findAllTitles(){
+        try{
+            return dsaTitleRepository.findAll();
+        }
+        catch(Exception e){
+            logger.error("Titles are not extracted");
+            return new ArrayList<>();
         }
     }
 

@@ -56,6 +56,13 @@ public class PublicController {
     @Autowired
     private TestcaseService testcaseService;
 
+    private final DsaTitleService dsaTitleService;
+
+    // new way to use service without @Autowired
+    public PublicController(DsaTitleService dsaTitleService){
+        this.dsaTitleService = dsaTitleService;
+    }
+
     @Operation(summary = "To check API health")
     @GetMapping("/health-check")
     public ResponseEntity<?> checkHealth(){
@@ -259,6 +266,16 @@ public class PublicController {
         catch(Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content")
+    @GetMapping("/getDSAContent")
+    public ResponseEntity<?> getDSAContent(){
+        List<DsaTitle> allTitles = dsaTitleService.findAllTitles();
+        if(allTitles.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }
