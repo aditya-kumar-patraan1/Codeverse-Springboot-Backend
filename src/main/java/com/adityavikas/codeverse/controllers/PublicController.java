@@ -275,7 +275,7 @@ public class PublicController {
         if(allTitles.isEmpty()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
+        return new ResponseEntity<>("yes",HttpStatus.OK);
     }
 
 }
