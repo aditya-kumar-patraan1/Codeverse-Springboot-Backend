@@ -39,7 +39,7 @@ public class DsaHeaderController {
             returnResponse.put("status",1);
             return new ResponseEntity<>(returnResponse, HttpStatus.OK);
         }
-        return new ResponseEntity<>(returnResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(returnResponse, HttpStatus.OK);
 
     }
 
