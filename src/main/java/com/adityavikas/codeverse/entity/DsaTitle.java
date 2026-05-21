@@ -15,6 +15,7 @@ public class DsaTitle {
 
     @Id
     private ObjectId id;
+    private String categoryId;
     @Indexed(unique = true)
     private String titleId;   // basically slug
     private String title;
