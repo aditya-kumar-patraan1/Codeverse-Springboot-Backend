@@ -25,9 +25,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-//    @Autowired
-//    private
-
     // act as a middleware
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -39,7 +36,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
             jwt = authorizationHeader.substring(7);
             username = jwtUtils.extractUserId(jwt);
-
         }
 
         if(username!=null){
