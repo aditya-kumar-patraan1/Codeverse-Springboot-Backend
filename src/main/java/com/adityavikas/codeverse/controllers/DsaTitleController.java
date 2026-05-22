@@ -1,9 +1,12 @@
 package com.adityavikas.codeverse.controllers;
 
+import com.adityavikas.codeverse.entity.DsaHeader;
 import com.adityavikas.codeverse.entity.DsaTitle;
+import com.adityavikas.codeverse.services.DsaHeaderService;
 import com.adityavikas.codeverse.services.DsaTitleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +23,29 @@ public class DsaTitleController {
     @Autowired
     private DsaTitleService dsaTitleService;
 
+    private final DsaHeaderService dsaHeaderService;
+
+    public DsaTitleController(DsaHeaderService dsaHeaderService){
+        this.dsaHeaderService=dsaHeaderService;
+    }
+
     @PostMapping("/addTitle/{categoryId}")
     @Operation(summary = "This endpoint is used to add the DSA Title by EDITOR of Codeverse")
-
     public ResponseEntity<?> addDsaTitle(@PathVariable String categoryId, @RequestBody DsaTitle dsaTitle){
         dsaTitle.setCategoryId(categoryId);
-        boolean isTemplateAdded = dsaTitleService.addDsaTitle(dsaTitle);
+        ObjectId dsaTitleId = dsaTitleService.addDsaTitle(dsaTitle);
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
 
-        if(isTemplateAdded){
+        if(dsaTitleId!=null){
+            DsaHeader dsaHeader = dsaHeaderService.findDsaHeaderByHeaderId(categoryId);
+            if(dsaHeader!=null){
+                dsaHeader.getTopicIds().add(dsaTitleId);
+                dsaHeaderService.addDsaHeader(dsaHeader);
+            }
+            else{
+                return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+            }
             returnResponse.put("status",1);
             return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }

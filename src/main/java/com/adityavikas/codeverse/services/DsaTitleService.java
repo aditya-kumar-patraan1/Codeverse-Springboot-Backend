@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.DsaTitle;
 import com.adityavikas.codeverse.repository.DsaTitleRepository;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,12 @@ public class DsaTitleService {
 
     private static final Logger logger = LoggerFactory.getLogger(DsaTitleService.class);
 
-    public boolean addDsaTitle(DsaTitle dsaTitle){
+    public ObjectId addDsaTitle(DsaTitle dsaTitle){
         try{
-            dsaTitleRepository.save(dsaTitle);
-            return true;
+            return dsaTitleRepository.save(dsaTitle).getId();
         } catch (Exception e) {
             logger.error("Dsa Title Not added");
-            return false;
+            return null;
         }
     }
 

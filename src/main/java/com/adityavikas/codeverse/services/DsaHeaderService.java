@@ -28,4 +28,14 @@ public class DsaHeaderService {
         }
     }
 
+    public DsaHeader findDsaHeaderByHeaderId(String categoryId){
+        try{
+            return dsaHeaderRepository.findByHeaderId(categoryId);
+        }
+        catch(Exception e){
+            logger.error("No DsaHeader find by HeaderId");
+            return null;
+        }
+    }
+
 }
