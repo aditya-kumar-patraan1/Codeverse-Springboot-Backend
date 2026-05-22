@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/**","/contest/**").authenticated()
                         .requestMatchers("/admin/**","/problem/**","/testcase/**").hasRole("ADMIN")
-                        .requestMatchers("/dsaHeader/**").hasRole("EDITOR")
+                        .requestMatchers("/dsaHeader/**","/DsaTitle/**","/DsaTemplate/**").hasRole("EDITOR")
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
