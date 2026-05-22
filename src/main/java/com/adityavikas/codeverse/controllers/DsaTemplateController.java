@@ -48,7 +48,7 @@ public class DsaTemplateController {
             return new ResponseEntity<>(returnResponse,HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(returnResponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
 }
