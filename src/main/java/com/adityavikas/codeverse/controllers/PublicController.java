@@ -57,10 +57,14 @@ public class PublicController {
     private TestcaseService testcaseService;
 
     private final DsaTitleService dsaTitleService;
+    private final DsaHeaderService dsaHeaderService;
+    private final DsaTemplateService dsaTemplateService;
 
     // new way to use service without @Autowired
-    public PublicController(DsaTitleService dsaTitleService){
+    public PublicController(DsaTitleService dsaTitleService,DsaTemplateService dsaTemplateService,DsaHeaderService dsaHeaderService){
+        this.dsaTemplateService = dsaTemplateService;
         this.dsaTitleService = dsaTitleService;
+        this.dsaHeaderService = dsaHeaderService;
     }
 
     @Operation(summary = "To check API health")
@@ -271,11 +275,67 @@ public class PublicController {
     @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content")
     @GetMapping("/getDSAContent")
     public ResponseEntity<?> getDSAContent(){
-        List<DsaTitle> allTitles = dsaTitleService.findAllTitles();
-        if(allTitles.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        List<DsaTemplate> allTemplates = dsaTemplateService.getTemplates();
+        Map<String,DSAContentDTO> returnResponse = new HashMap<>();
+
+        for(var template : allTemplates){
+
+
+            // accessing parent ID
+            String parentId = template.getParentId();
+            // access title document
+            DsaTitle dsaTitle = dsaTitleService.findByTitleId(parentId);
+//            access category document
+            DsaHeader dsaHeader = dsaHeaderService.findDsaHeaderByHeaderId(dsaTitle.getCategoryId());
+//            access heading ID
+            String headerId = dsaHeader.getHeaderId();
+
+
+            // creating template
+            DSAContentDTO.SpecificTemplate specificTemplate = new DSAContentDTO.SpecificTemplate();
+            specificTemplate.setVideoLinks(template.getVideoLinks());
+            specificTemplate.setTitle(template.getTitle());
+            specificTemplate.setProblemLinks(template.getProblemLinks());
+            specificTemplate.setJava(template.getJava());
+            specificTemplate.setPython(template.getPython());
+            specificTemplate.setCpp(template.getCpp());
+            specificTemplate.setJavascript(template.getJavascript());
+
+
+
+            if(returnResponse.containsKey(headerId)){
+                DSAContentDTO dsaContentDTO;
+                dsaContentDTO = returnResponse.get(headerId);
+                if(dsaContentDTO.getTopics().get(parentId)!=null){
+                    dsaContentDTO.getTopics().get(parentId).getCodeTemplates().put(template.getTemplateId(),specificTemplate);
+                }
+                else{
+                    DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
+                    specificAlgoCollection.setTitle(dsaTitle.getTitle());
+                    specificAlgoCollection.setDescription(dsaTitle.getDescription());
+                    specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
+                    specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
+                    dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
+                }
+                returnResponse.put(headerId,dsaContentDTO);
+            }
+            else{
+                DSAContentDTO dsaContentDTO = new DSAContentDTO();
+                dsaContentDTO.setTitle(dsaHeader.getTitle());
+                dsaContentDTO.setDescription(dsaHeader.getDescription());
+
+                // create specificAlgoCollection
+                DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
+                specificAlgoCollection.setTitle(dsaTitle.getTitle());
+                specificAlgoCollection.setDescription(dsaTitle.getDescription());
+                specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
+                specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
+                dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
+
+                returnResponse.put(headerId,dsaContentDTO);
+            }
         }
-        return new ResponseEntity<>("yes",HttpStatus.OK);
+        return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
 }

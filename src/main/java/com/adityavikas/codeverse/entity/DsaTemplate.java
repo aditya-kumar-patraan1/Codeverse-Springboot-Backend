@@ -1,5 +1,7 @@
 package com.adityavikas.codeverse.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -17,6 +19,7 @@ public class DsaTemplate {
     private String title;
 
     @Id
+    @JsonSerialize(using=ToStringSerializer.class)
     private ObjectId id;
 
     @Indexed(unique = true)
