@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 @Service
 public class DsaHeaderService {
 
@@ -34,6 +36,15 @@ public class DsaHeaderService {
         }
         catch(Exception e){
             logger.error("No DsaHeader find by HeaderId");
+            return null;
+        }
+    }
+
+    public List<DsaHeader> getAllHeaders(){
+        try{
+            return dsaHeaderRepository.findAll();
+        } catch (Exception e) {
+            logger.error("No DSA Headers are present");
             return null;
         }
     }

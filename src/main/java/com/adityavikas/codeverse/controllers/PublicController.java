@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.dto.*;
 import com.adityavikas.codeverse.entity.*;
+import com.adityavikas.codeverse.repository.DsaTitleRepositoryImpl;
 import com.adityavikas.codeverse.repository.UserRepository;
 import com.adityavikas.codeverse.services.*;
 import com.adityavikas.codeverse.utils.JwtUtils;
@@ -59,6 +60,9 @@ public class PublicController {
     private final DsaTitleService dsaTitleService;
     private final DsaHeaderService dsaHeaderService;
     private final DsaTemplateService dsaTemplateService;
+
+    @Autowired
+    private DsaTitleRepositoryImpl dsaTitleRepositoryImpl;
 
     // new way to use service without @Autowired
     public PublicController(DsaTitleService dsaTitleService,DsaTemplateService dsaTemplateService,DsaHeaderService dsaHeaderService){
@@ -276,7 +280,25 @@ public class PublicController {
     @GetMapping("/getDSAContent")
     public ResponseEntity<?> getDSAContent(){
         List<DsaTemplate> allTemplates = dsaTemplateService.getTemplates();
+//        List<DsaHeader> allHeaders = dsaHeaderService.getAllHeaders();
         Map<String,DSAContentDTO> returnResponse = new HashMap<>();
+
+
+//        for(var currHeader : allHeaders){
+
+//            String categoryId = currHeader.getHeaderId();
+//            List<DsaTitle> allTitleByCategoryId = dsaTitleRepositoryImpl.getAllTitleByCategoryId(categoryId);
+
+//            for(DsaTitle dsaTitle : allTitleByCategoryId){
+//                dsaTitle.get
+//
+//
+//
+//            }
+
+//            returnResponse.put(categoryId,);
+
+//        }
 
         for(var template : allTemplates){
 
