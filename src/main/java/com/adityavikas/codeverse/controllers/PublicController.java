@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.dto.*;
 import com.adityavikas.codeverse.entity.*;
+import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import com.adityavikas.codeverse.repository.DsaTitleRepositoryImpl;
 import com.adityavikas.codeverse.repository.UserRepository;
 import com.adityavikas.codeverse.services.*;
@@ -63,6 +64,9 @@ public class PublicController {
 
     @Autowired
     private DsaTitleRepositoryImpl dsaTitleRepositoryImpl;
+
+    @Autowired
+    private DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl;
 
     // new way to use service without @Autowired
     public PublicController(DsaTitleService dsaTitleService,DsaTemplateService dsaTemplateService,DsaHeaderService dsaHeaderService){
@@ -279,84 +283,108 @@ public class PublicController {
     @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content")
     @GetMapping("/getDSAContent")
     public ResponseEntity<?> getDSAContent(){
-        List<DsaTemplate> allTemplates = dsaTemplateService.getTemplates();
-//        List<DsaHeader> allHeaders = dsaHeaderService.getAllHeaders();
+        List<DsaHeader> allHeaders = dsaHeaderService.getAllHeaders();
         Map<String,DSAContentDTO> returnResponse = new HashMap<>();
 
 
-//        for(var currHeader : allHeaders){
+        for(var currHeader : allHeaders){
 
-//            String categoryId = currHeader.getHeaderId();
-//            List<DsaTitle> allTitleByCategoryId = dsaTitleRepositoryImpl.getAllTitleByCategoryId(categoryId);
+            String categoryId = currHeader.getHeaderId();
+            List<DsaTitle> allTitleByCategoryId = dsaTitleRepositoryImpl.getAllTitleByCategoryId(categoryId);
+            DSAContentDTO dsaContentDTO = new DSAContentDTO();
 
-//            for(DsaTitle dsaTitle : allTitleByCategoryId){
-//                dsaTitle.get
-//
-//
-//
-//            }
+            dsaContentDTO.setTitle(currHeader.getTitle());
+            dsaContentDTO.setDescription(currHeader.getDescription());
 
-//            returnResponse.put(categoryId,);
+            for(DsaTitle dsaTitle : allTitleByCategoryId){
 
-//        }
-
-        for(var template : allTemplates){
-
-
-            // accessing parent ID
-            String parentId = template.getParentId();
-            // access title document
-            DsaTitle dsaTitle = dsaTitleService.findByTitleId(parentId);
-//            access category document
-            DsaHeader dsaHeader = dsaHeaderService.findDsaHeaderByHeaderId(dsaTitle.getCategoryId());
-//            access heading ID
-            String headerId = dsaHeader.getHeaderId();
-
-
-            // creating template
-            DSAContentDTO.SpecificTemplate specificTemplate = new DSAContentDTO.SpecificTemplate();
-            specificTemplate.setVideoLinks(template.getVideoLinks());
-            specificTemplate.setTitle(template.getTitle());
-            specificTemplate.setProblemLinks(template.getProblemLinks());
-            specificTemplate.setJava(template.getJava());
-            specificTemplate.setPython(template.getPython());
-            specificTemplate.setCpp(template.getCpp());
-            specificTemplate.setJavascript(template.getJavascript());
-
-
-
-            if(returnResponse.containsKey(headerId)){
-                DSAContentDTO dsaContentDTO;
-                dsaContentDTO = returnResponse.get(headerId);
-                if(dsaContentDTO.getTopics().get(parentId)!=null){
-                    dsaContentDTO.getTopics().get(parentId).getCodeTemplates().put(template.getTemplateId(),specificTemplate);
-                }
-                else{
-                    DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
-                    specificAlgoCollection.setTitle(dsaTitle.getTitle());
-                    specificAlgoCollection.setDescription(dsaTitle.getDescription());
-                    specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
-                    specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
-                    dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
-                }
-                returnResponse.put(headerId,dsaContentDTO);
-            }
-            else{
-                DSAContentDTO dsaContentDTO = new DSAContentDTO();
-                dsaContentDTO.setTitle(dsaHeader.getTitle());
-                dsaContentDTO.setDescription(dsaHeader.getDescription());
-
-                // create specificAlgoCollection
+                String titleId = dsaTitle.getTitleId();
+                List<DsaTemplate> dsaTemplates = dsaTemplateRepositoryImpl.getDsaTemplatesByParentId(titleId);
                 DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
-                specificAlgoCollection.setTitle(dsaTitle.getTitle());
-                specificAlgoCollection.setDescription(dsaTitle.getDescription());
-                specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
-                specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
-                dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
 
-                returnResponse.put(headerId,dsaContentDTO);
+                specificAlgoCollection.setDescription(dsaTitle.getDescription());
+                specificAlgoCollection.setTitle(dsaTitle.getTitle());
+                specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
+
+                for(var currTemplate : dsaTemplates){
+                    DSAContentDTO.SpecificTemplate specificTemplate = new DSAContentDTO.SpecificTemplate();
+                    specificTemplate.setCpp(currTemplate.getCpp());
+                    specificTemplate.setPython(currTemplate.getPython());
+                    specificTemplate.setJavascript(currTemplate.getJavascript());
+                    specificTemplate.setJava(currTemplate.getJava());
+                    specificTemplate.setProblemLinks(currTemplate.getProblemLinks());
+                    specificTemplate.setVideoLinks(currTemplate.getVideoLinks());
+                    specificTemplate.setTitle(currTemplate.getTitle());
+
+                    specificAlgoCollection.getCodeTemplates().put(currTemplate.getTemplateId(),specificTemplate);
+
+                }
+
+                dsaContentDTO.getTopics().put(dsaTitle.getTitleId(),specificAlgoCollection);
+
             }
+
+            returnResponse.put(categoryId,dsaContentDTO);
+
         }
+
+//        for(var template : allTemplates){
+//
+//
+//            // accessing parent ID
+//            String parentId = template.getParentId();
+//            // access title document
+//            DsaTitle dsaTitle = dsaTitleService.findByTitleId(parentId);
+//            access category document
+//            DsaHeader dsaHeader = dsaHeaderService.findDsaHeaderByHeaderId(dsaTitle.getCategoryId());
+//            access heading ID
+//            String headerId = dsaHeader.getHeaderId();
+//
+//
+//            // creating template
+//            DSAContentDTO.SpecificTemplate specificTemplate = new DSAContentDTO.SpecificTemplate();
+//            specificTemplate.setVideoLinks(template.getVideoLinks());
+//            specificTemplate.setTitle(template.getTitle());
+//            specificTemplate.setProblemLinks(template.getProblemLinks());
+//            specificTemplate.setJava(template.getJava());
+//            specificTemplate.setPython(template.getPython());
+//            specificTemplate.setCpp(template.getCpp());
+//            specificTemplate.setJavascript(template.getJavascript());
+//
+//
+//
+//            if(returnResponse.containsKey(headerId)){
+//                DSAContentDTO dsaContentDTO;
+//                dsaContentDTO = returnResponse.get(headerId);
+//                if(dsaContentDTO.getTopics().get(parentId)!=null){
+//                    dsaContentDTO.getTopics().get(parentId).getCodeTemplates().put(template.getTemplateId(),specificTemplate);
+//                }
+//                else{
+//                    DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
+//                    specificAlgoCollection.setTitle(dsaTitle.getTitle());
+//                    specificAlgoCollection.setDescription(dsaTitle.getDescription());
+//                    specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
+//                    specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
+//                    dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
+//                }
+//                returnResponse.put(headerId,dsaContentDTO);
+//            }
+//            else{
+//                DSAContentDTO dsaContentDTO = new DSAContentDTO();
+//                dsaContentDTO.setTitle(dsaHeader.getTitle());
+//                dsaContentDTO.setDescription(dsaHeader.getDescription());
+//
+//                // create specificAlgoCollection
+//                DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
+//                specificAlgoCollection.setTitle(dsaTitle.getTitle());
+//                specificAlgoCollection.setDescription(dsaTitle.getDescription());
+//                specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
+//                specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
+//                dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
+//
+//                returnResponse.put(headerId,dsaContentDTO);
+//            }
+//        }
         return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
