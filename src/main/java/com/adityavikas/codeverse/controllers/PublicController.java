@@ -328,63 +328,6 @@ public class PublicController {
 
         }
 
-//        for(var template : allTemplates){
-//
-//
-//            // accessing parent ID
-//            String parentId = template.getParentId();
-//            // access title document
-//            DsaTitle dsaTitle = dsaTitleService.findByTitleId(parentId);
-//            access category document
-//            DsaHeader dsaHeader = dsaHeaderService.findDsaHeaderByHeaderId(dsaTitle.getCategoryId());
-//            access heading ID
-//            String headerId = dsaHeader.getHeaderId();
-//
-//
-//            // creating template
-//            DSAContentDTO.SpecificTemplate specificTemplate = new DSAContentDTO.SpecificTemplate();
-//            specificTemplate.setVideoLinks(template.getVideoLinks());
-//            specificTemplate.setTitle(template.getTitle());
-//            specificTemplate.setProblemLinks(template.getProblemLinks());
-//            specificTemplate.setJava(template.getJava());
-//            specificTemplate.setPython(template.getPython());
-//            specificTemplate.setCpp(template.getCpp());
-//            specificTemplate.setJavascript(template.getJavascript());
-//
-//
-//
-//            if(returnResponse.containsKey(headerId)){
-//                DSAContentDTO dsaContentDTO;
-//                dsaContentDTO = returnResponse.get(headerId);
-//                if(dsaContentDTO.getTopics().get(parentId)!=null){
-//                    dsaContentDTO.getTopics().get(parentId).getCodeTemplates().put(template.getTemplateId(),specificTemplate);
-//                }
-//                else{
-//                    DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
-//                    specificAlgoCollection.setTitle(dsaTitle.getTitle());
-//                    specificAlgoCollection.setDescription(dsaTitle.getDescription());
-//                    specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
-//                    specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
-//                    dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
-//                }
-//                returnResponse.put(headerId,dsaContentDTO);
-//            }
-//            else{
-//                DSAContentDTO dsaContentDTO = new DSAContentDTO();
-//                dsaContentDTO.setTitle(dsaHeader.getTitle());
-//                dsaContentDTO.setDescription(dsaHeader.getDescription());
-//
-//                // create specificAlgoCollection
-//                DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
-//                specificAlgoCollection.setTitle(dsaTitle.getTitle());
-//                specificAlgoCollection.setDescription(dsaTitle.getDescription());
-//                specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
-//                specificAlgoCollection.getCodeTemplates().put(template.getTemplateId(),specificTemplate);
-//                dsaContentDTO.getTopics().put(parentId,specificAlgoCollection);
-//
-//                returnResponse.put(headerId,dsaContentDTO);
-//            }
-//        }
         return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
