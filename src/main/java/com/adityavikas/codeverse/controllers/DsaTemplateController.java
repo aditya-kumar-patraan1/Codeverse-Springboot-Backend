@@ -51,4 +51,9 @@ public class DsaTemplateController {
         return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
+    @PutMapping("/updateTemplate/{templateId}")
+    public ResponseEntity<?> updateDsaTemplate(@PathVariable String templateId){
+        return ResponseEntity.ok("Template updated");
+    }
+
 }
