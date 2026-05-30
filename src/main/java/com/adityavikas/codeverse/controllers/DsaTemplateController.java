@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.entity.DsaTemplate;
 import com.adityavikas.codeverse.entity.DsaTitle;
+import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import com.adityavikas.codeverse.repository.DsaTitleRepository;
 import com.adityavikas.codeverse.services.DsaTemplateService;
 import com.adityavikas.codeverse.services.DsaTitleService;
@@ -30,6 +31,12 @@ public class DsaTemplateController {
     @Autowired
     private DsaTitleRepository dsaTitleRepository;
 
+    private final DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl;
+
+    public DsaTemplateController(DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl){
+        this.dsaTemplateRepositoryImpl = dsaTemplateRepositoryImpl;
+    }
+
     @PostMapping("/addTemplate/{parentId}")
     @Operation(summary = "This endpoint is used to add the DSA Template by EDITOR of Codeverse")
     public ResponseEntity<?> addDsaTemplate(@PathVariable String parentId, @RequestBody DsaTemplate dsaTemplate){
@@ -52,8 +59,18 @@ public class DsaTemplateController {
     }
 
     @PutMapping("/updateTemplate/{templateId}")
-    public ResponseEntity<?> updateDsaTemplate(@PathVariable String templateId){
-        return ResponseEntity.ok("Template updated");
+    public ResponseEntity<?> updateDsaTemplate(@PathVariable String templateId,@RequestBody DsaTemplate dsaTemplate){
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+
+        boolean isUpdated = dsaTemplateRepositoryImpl.updateDSAContent(templateId,dsaTemplate);
+
+        if(isUpdated){
+            returnResponse.put("status",1);
+            return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
 }
