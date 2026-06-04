@@ -80,7 +80,7 @@ public class DsaTemplateController {
 
 
         Map<String,Integer> returnResponse = new HashMap<>();
-        returnResponse.put("status",1);
+        returnResponse.put("status",0);
 
 //        boolean isDeleted = dsaTemplateService.deleteDsaTemplate(templateId);
 
