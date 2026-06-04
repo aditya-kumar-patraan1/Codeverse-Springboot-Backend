@@ -315,6 +315,7 @@ public class PublicController {
                     specificTemplate.setProblemLinks(currTemplate.getProblemLinks());
                     specificTemplate.setVideoLinks(currTemplate.getVideoLinks());
                     specificTemplate.setTitle(currTemplate.getTitle());
+                    specificTemplate.setId(currTemplate.getId());
 
                     specificAlgoCollection.getCodeTemplates().put(currTemplate.getTemplateId(),specificTemplate);
 

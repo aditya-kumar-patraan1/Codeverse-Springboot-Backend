@@ -1,8 +1,11 @@
 package com.adityavikas.codeverse.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +29,8 @@ public class DSAContentDTO {
 
     @Data
     public static class SpecificTemplate{
+        @JsonSerialize(using= ToStringSerializer.class)
+        private ObjectId id;
         private String title;
         private List<String> videoLinks = new ArrayList<>();
         private List<String> problemLinks = new ArrayList<>();

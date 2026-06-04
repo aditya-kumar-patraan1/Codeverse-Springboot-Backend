@@ -6,6 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface DsaTemplateRepository extends MongoRepository<DsaTemplate, ObjectId> {
 
-    void deleteByTemplateId(String templateId);
 
 }
