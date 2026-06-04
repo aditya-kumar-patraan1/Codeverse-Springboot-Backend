@@ -77,12 +77,19 @@ public class DsaTemplateController {
     @DeleteMapping("/deleteTemplate/{templateId}")
     @Operation(summary = "This API Endpoint is used to delete the existing DSA Template by EDITOR of Codeverse")
     public ResponseEntity<?> deleteDsaTemplate(@PathVariable String templateId){
-//        boolean isDeleted = true;
+
 
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",1);
 
-        return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+//        boolean isDeleted = dsaTemplateService.deleteDsaTemplate(templateId);
+
+        if(true){
+            returnResponse.put("status",1);
+            return ResponseEntity.ok(returnResponse);
+        }
+
+        return new ResponseEntity<>(returnResponse,HttpStatus.NOT_FOUND);
 
 
 
