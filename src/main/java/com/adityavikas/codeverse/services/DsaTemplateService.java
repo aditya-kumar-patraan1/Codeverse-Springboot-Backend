@@ -37,4 +37,14 @@ public class DsaTemplateService {
         }
     }
 
+    public boolean deleteDsaTemplate(String templateId){
+        try{
+            dsaTemplateRepository.deleteByTemplateId(templateId);
+            return true;
+        } catch (Exception e) {
+            logger.error("DSA Template not delete error : "+e);
+            return false;
+        }
+    }
+
 }
