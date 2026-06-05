@@ -1,5 +1,7 @@
 package com.adityavikas.codeverse.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -14,6 +16,7 @@ import java.util.List;
 public class DsaTitle {
 
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
     private String categoryId;
     @Indexed(unique = true)
@@ -21,6 +24,8 @@ public class DsaTitle {
     private String title;
     private String difficulty;
     private String description;
+
+    @JsonSerialize(contentUsing=ToStringSerializer.class)
     private List<ObjectId> listOfTemplateIds = new ArrayList<>();
 
 }
