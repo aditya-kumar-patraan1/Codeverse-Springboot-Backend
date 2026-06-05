@@ -47,4 +47,14 @@ public class DsaTitleService {
         }
     }
 
+    public boolean deleteTitleById(ObjectId titleId){
+        try{
+            dsaTitleRepository.deleteById(titleId);
+            return true;
+        } catch (Exception e) {
+            logger.error("DSA Title not deleted due to error : "+e);
+            return false;
+        }
+    }
+
 }
