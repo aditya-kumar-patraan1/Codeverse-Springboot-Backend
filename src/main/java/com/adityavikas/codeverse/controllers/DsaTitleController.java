@@ -56,7 +56,9 @@ public class DsaTitleController {
     @DeleteMapping("/deleteTitle/{titleId}")
     @Operation(summary = "This API Endpoint is used to delete the DSA Titles & all the template inside it by EDITOR of Codeverse")
     public ResponseEntity<?> deleteDsaTitle(@PathVariable String titleId){
-        return ResponseEntity.ok("DSA Title with title id : "+titleId+" deleted !");
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",1);
+        return ResponseEntity.ok(returnResponse);
     }
 
 }
