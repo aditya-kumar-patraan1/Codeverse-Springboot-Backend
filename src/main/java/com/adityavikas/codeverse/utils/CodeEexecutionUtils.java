@@ -1,11 +1,19 @@
 package com.adityavikas.codeverse.utils;
 
 import com.adityavikas.codeverse.dto.LanguageFormatDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
+@Component
 public class CodeEexecutionUtils {
+
+    RestTemplate restTemplate = new RestTemplate();
+    private static final String jdoodleURL = "https://api.jdoodle.com/v1/execute";
 
     public LanguageFormatDTO getJdoodleConfig(String language){
 
