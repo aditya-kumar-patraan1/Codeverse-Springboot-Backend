@@ -9,15 +9,15 @@ public class CodeEexecutionUtils {
 
     public LanguageFormatDTO getJdoodleConfig(String language){
 
-        List<List<String>> listofLanguages = new ArrayList<>();
-        listofLanguages.add(new ArrayList<>(List.of("python","python3")));
-        listofLanguages.add(new ArrayList<>(List.of("cpp","c++")));
-        listofLanguages.add(new ArrayList<>(List.of("js","javascript")));
-        listofLanguages.add(new ArrayList<>(List.of("java")));
+        List<List<String>> languages = new ArrayList<>();
+        languages.add(new ArrayList<>(List.of("python","python3")));
+        languages.add(new ArrayList<>(List.of("cpp","c++")));
+        languages.add(new ArrayList<>(List.of("js","javascript")));
+        languages.add(new ArrayList<>(List.of("java")));
 
         int idx=0;
 
-        for(var currList : listofLanguages){
+        for(var currList : languages){
             if(currList.contains(language.toLowerCase())){
                 break;
             }
