@@ -91,9 +91,8 @@ public class CodeExecutionUtils {
                 JdoodleResponseDTO.class
         );
 
-        JdoodleResponseDTO outputData = JdoodleResponse.getBody();
+        return JdoodleResponse.getBody();
 
-        return outputData;
     }
 
 }
