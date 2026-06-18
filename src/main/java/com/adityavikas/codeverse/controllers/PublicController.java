@@ -5,6 +5,7 @@ import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import com.adityavikas.codeverse.repository.DsaTitleRepositoryImpl;
 import com.adityavikas.codeverse.repository.UserRepository;
 import com.adityavikas.codeverse.services.*;
+import com.adityavikas.codeverse.utils.CodeExecutionUtils;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -68,6 +69,9 @@ public class PublicController {
     @Autowired
     private DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl;
 
+    @Autowired
+    private CodeExecutionUtils codeExecutionUtils;
+
     // new way to use service without @Autowired
     public PublicController(DsaTitleService dsaTitleService,DsaTemplateService dsaTemplateService,DsaHeaderService dsaHeaderService){
         this.dsaTemplateService = dsaTemplateService;
@@ -79,6 +83,12 @@ public class PublicController {
     @GetMapping("/health-check")
     public ResponseEntity<?> checkHealth(){
         return ResponseEntity.ok(List.of("Hey !","It's","Working"));
+    }
+
+    @PostMapping("/test-code-doodle")
+    public ResponseEntity<?> testJdoodleResponse(@RequestBody ExecuteRequest executeRequest){
+        JdoodleResponseDTO jdoodleResponseDTO = codeExecutionUtils.runJdoodleCode(executeRequest);
+        return ResponseEntity.ok(jdoodleResponseDTO);
     }
 
     @Operation(summary = "to register user to codeverse")
