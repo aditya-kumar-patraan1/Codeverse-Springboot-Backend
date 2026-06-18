@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.utils;
 
+import com.adityavikas.codeverse.dto.JdoodleResponseDTO;
 import com.adityavikas.codeverse.dto.LanguageFormatDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,10 @@ public class CodeEexecutionUtils {
         List<String> finalData = versionData.get(idx);
 
         return new LanguageFormatDTO(finalData.get(0), finalData.get(1));
+
+    }
+
+    public JdoodleResponseDTO runJdoodleCode(){
 
     }
 
