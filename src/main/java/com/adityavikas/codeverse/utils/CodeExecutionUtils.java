@@ -19,10 +19,10 @@ import java.util.List;
 public class CodeExecutionUtils {
 
     @Value("${jdoodle.client.id}")
-    private String jdoodleClientId;
+    private String JDOODLE_CLIENT_ID;
 
     @Value("${jdoodle.client.secret}")
-    private String jdoodleClientSecret;
+    private String JDOODLE_CLIENT_SECRET;
 
     RestTemplate restTemplate = new RestTemplate();
     private static final String jdoodleURL = "https://api.jdoodle.com/v1/execute";
@@ -60,7 +60,7 @@ public class CodeExecutionUtils {
         LanguageFormatDTO config = getJdoodleConfig(executeRequest.getLanguage());
 
         try{
-            return executeUserCode(jdoodleClientId,jdoodleClientSecret,executeRequest.getUserCode(),config);
+            return executeUserCode(JDOODLE_CLIENT_ID,JDOODLE_CLIENT_SECRET,executeRequest.getUserCode(),config);
         }
         catch(HttpClientErrorException e){
             log.error("Some error occurred while executing user code");
