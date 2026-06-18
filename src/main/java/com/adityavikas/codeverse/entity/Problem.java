@@ -38,4 +38,11 @@ public class Problem {
     private String functionName;
     private LocalDateTime created_at;
 
+
+    // newly added info
+    private boolean isContestProblem = false;
+    private boolean isVisible = false;
+    private ObjectId contestId;
+    private int problemOrder = 0;
+
 }
