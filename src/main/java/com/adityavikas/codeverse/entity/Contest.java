@@ -31,6 +31,7 @@ public class Contest {
     private String contestDescription;
     private LocalDateTime startTime;
     private int duration;
+    private LocalDateTime endTime;                  // newly added
 //    @DBRef
     private List<ObjectId> registeredUsers = new ArrayList<>();
     @Transient
@@ -49,5 +50,7 @@ public class Contest {
             return "Finished";
         }
     }
+
+    private List<ObjectId> editorAccessId = new ArrayList<>();       // newly
 
 }
