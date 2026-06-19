@@ -9,4 +9,6 @@ public interface ProblemDetailRepository extends MongoRepository<ProblemDetails,
     ProblemDetails findByProblemId(ObjectId problemId);
     void deleteByProblemId(ObjectId problemId);
 
+    void deleteAllByProblemId(ObjectId problemId);
+
 }
