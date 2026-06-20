@@ -1,10 +1,12 @@
 package com.adityavikas.codeverse.utils;
 
+import com.adityavikas.codeverse.cache.AppCache;
 import com.adityavikas.codeverse.dto.ExecuteRequest;
 import com.adityavikas.codeverse.dto.JdoodleRequestDTO;
 import com.adityavikas.codeverse.dto.JdoodleResponseDTO;
 import com.adityavikas.codeverse.dto.LanguageFormatDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -25,7 +27,10 @@ public class CodeExecutionUtils {
     private String JDOODLE_CLIENT_SECRET;
 
     RestTemplate restTemplate = new RestTemplate();
-    private static final String jdoodleURL = "https://api.jdoodle.com/v1/execute";
+//    private static final String jdoodleURL = "https://api.jdoodle.com/v1/execute";
+
+    @Autowired
+    private AppCache appCache;
 
     public LanguageFormatDTO getJdoodleConfig(String language){
 
@@ -83,6 +88,8 @@ public class CodeExecutionUtils {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<JdoodleRequestDTO> entity = new HttpEntity<>(JdoodleRequest,headers);
+
+        String jdoodleURL = appCache.apiCache.get(AppCache.Keys.JDOODLE_API_URL.toString());
 
         ResponseEntity<JdoodleResponseDTO> JdoodleResponse = restTemplate.exchange(
                 jdoodleURL,

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/apiData")
+@RequestMapping("/appCache")
 @Tag(name="App Cache controller (Admin access only)",description = "API endpoints used to handle cache")
 public class AppCacheController {
 
