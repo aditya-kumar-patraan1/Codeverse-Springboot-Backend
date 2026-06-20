@@ -4,9 +4,11 @@ import com.adityavikas.codeverse.entity.Cache;
 import com.adityavikas.codeverse.repository.AppCacheRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AppCacheService {
     
     private final AppCacheRepository appCacheRepository;
