@@ -3,11 +3,13 @@ package com.adityavikas.codeverse.cache;
 import com.adityavikas.codeverse.entity.Cache;
 import com.adityavikas.codeverse.services.AppCacheService;
 import jakarta.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class AppCache {
 
     public enum Keys{
