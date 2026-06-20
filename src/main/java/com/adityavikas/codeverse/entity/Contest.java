@@ -36,6 +36,7 @@ public class Contest {
     private List<ObjectId> registeredUsers = new ArrayList<>();
     @Transient
     private String contestStatus;
+    private boolean leaderBoardGenerated = false;
 
     @JsonGetter("contestStatus")
     public String getContestStatus(){
