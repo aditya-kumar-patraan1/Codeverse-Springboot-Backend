@@ -7,6 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContestProblemService {
 
-
+    public boolean addContestProblem(){
+        try{
+            return true;
+        } catch (Exception e) {
+            log.error("contest problem not added & rollback...");
+            return false;
+        }
+    }
 
 }
