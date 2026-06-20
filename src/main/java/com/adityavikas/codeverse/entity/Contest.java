@@ -37,6 +37,7 @@ public class Contest {
     @Transient
     private String contestStatus;
     private boolean leaderBoardGenerated = false;
+    private LocalDateTime createdAt;
 
     @JsonGetter("contestStatus")
     public String getContestStatus(){
