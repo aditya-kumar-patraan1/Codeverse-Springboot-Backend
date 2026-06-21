@@ -33,6 +33,7 @@ public class ProblemService {
     @Autowired
     private TestcaseService testcaseService;
 
+    @Transactional
     public Boolean saveProblem(Problem problem){
         try{
             problem.setCreated_at(LocalDateTime.now());

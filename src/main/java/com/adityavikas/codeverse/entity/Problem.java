@@ -41,7 +41,7 @@ public class Problem {
 
     // newly added info
     private boolean isContestProblem = false;
-    private boolean isVisible = false;
+    private boolean isVisible = true;
     private ObjectId contestId;
     private int problemOrder = 0;
 

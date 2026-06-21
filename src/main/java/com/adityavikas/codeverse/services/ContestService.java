@@ -138,4 +138,14 @@ public class ContestService {
         }
     }
 
+    public boolean findContestByContestId(ObjectId contestId){
+        try{
+            contestRepository.findById(contestId);
+            return true;
+        } catch (Exception e) {
+            log.error("contest not found by contest id : "+contestId);
+            return false;
+        }
+    }
+
 }

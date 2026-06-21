@@ -72,6 +72,9 @@ public class PublicController {
     @Autowired
     private CodeExecutionUtils codeExecutionUtils;
 
+    @Autowired
+    private ContestProblemService contestProblemService;
+
     // new way to use service without @Autowired
     public PublicController(DsaTitleService dsaTitleService,DsaTemplateService dsaTemplateService,DsaHeaderService dsaHeaderService){
         this.dsaTemplateService = dsaTemplateService;
@@ -83,6 +86,16 @@ public class PublicController {
     @GetMapping("/health-check")
     public ResponseEntity<?> checkHealth(){
         return ResponseEntity.ok(List.of("Hey !","It's","Working"));
+    }
+
+    @Operation(summary = "testing add Contest Problem")
+    @PostMapping("/test-add-contest-problem/{contestId}")
+    public ResponseEntity<?> addContestProblem(@PathVariable ObjectId contestId,@RequestBody ContestProblemDTO contestProblemDTO){
+        boolean isContestProblemAdded = contestProblemService.addContestProblem(contestId, contestProblemDTO);
+        if(isContestProblemAdded){
+            return ResponseEntity.ok("contest problem added");
+        }
+        return ResponseEntity.ok("contest problem not added");
     }
 
     @PostMapping("/test-code-doodle")
