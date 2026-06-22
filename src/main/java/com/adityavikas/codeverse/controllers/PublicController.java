@@ -36,6 +36,9 @@ public class PublicController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private PublicService publicService;
+
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
@@ -225,79 +228,27 @@ public class PublicController {
     @Operation(summary = "This API Endpoint is used to access Entire Problem")
     @GetMapping("/getEntireProblem/{problemId}")
     public ResponseEntity<?> getEntireProblem(@PathVariable String problemId){
-        Problem problem = problemService.fetchProblem(problemId).orElse(null);
-        ProblemDetails problemDetails = problemDetailService.fetchProblemDetail(problemId);
-        List<Testcase> testcases = testcaseService.fetchTestcase(problemId);
-
-        if(problem!=null){
-
-            ProblemDTO problemDTO = new ProblemDTO();
-            problemDTO.setAcceptanceRate(problem.getAcceptanceRate());
-            problemDTO.setInputType(problem.getInputType());
-            problemDTO.setReturnType(problem.getReturnType());
-            problemDTO.setFunctionName(problem.getFunctionName());
-            problemDTO.setDifficulty(problem.getDifficulty());
-            problemDTO.setStatus(problem.isStatus());
-            problemDTO.setSlug(problem.getSlug());
-            problemDTO.setTitle(problem.getTitle());
-            problemDTO.setSno(problem.getSno());
-
-            List<String> topicTags = problem.getTopicTags();
-
-            String topics = "";
-
-            for(int i=0;i< topicTags.size();i++){
-                topics = topics + topicTags.get(i);
-                if(i < topicTags.size()-1){
-                    topics+=',';
-                }
-            }
-
-            problemDTO.setTopicTags(topics);
-            problemDTO.setDescription(problemDetails.getDescription());
-            problemDTO.setTemplates(problemDetails.getTemplates());
-            problemDTO.setSolutions(problemDetails.getSolutions());
-            problemDTO.setTimeComplexity(problemDetails.getTimeComplexity());
-            problemDTO.setSpaceComplexity(problemDetails.getSpaceComplexity());
-            problemDTO.setEditorial(problemDetails.getEditorial());
-            problemDTO.setDescription(problemDetails.getDescription());
-            problemDTO.setAlgorithmSteps(problemDetails.getAlgorithmSteps());
-
-
-            List<TestcaseDTO> listOfTestcase = new ArrayList<>();
-
-            for(int i=0;i< testcases.size();i++){
-                Testcase testcase = testcases.get(i);
-                TestcaseDTO testcaseDTO = new TestcaseDTO();
-                testcaseDTO.setInput(testcase.getInput());
-                testcaseDTO.setHidden(testcase.isHidden());
-                // output added
-                testcaseDTO.setOutput(testcase.getOutput());
-                testcaseDTO.setExplanation(testcase.getExplanation());
-                listOfTestcase.add(testcaseDTO);
-            }
-
-            ProblemResponseDTO problemResponseDTO  = new ProblemResponseDTO();
-            problemResponseDTO.setProblemID(problemId);
-            problemResponseDTO.setProblemDTO(problemDTO);
-            problemResponseDTO.setListOfTestcase(listOfTestcase);
-
-            return new ResponseEntity<>(problemResponseDTO,HttpStatus.OK);
+        ProblemResponseDTO specificProblemData = publicService.getSpecificProblemData(problemId);
+        if(specificProblemData!=null){
+            return new ResponseEntity<>(specificProblemData,HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-
+        return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "This is used to fetch all Problems")
+    @Operation(summary = "This is used to fetch all Problems (including it's detail & testcases)")
     @GetMapping("/fetchAllProblem")
     public ResponseEntity<?> fetchAllProblems(){
         try{
             List<Problem> allProblems = problemService.fetchAllProblems();
+            List<ProblemResponseDTO> result = new ArrayList<>();
+
+            for(Problem problem : allProblems){
+                result.add(publicService.getSpecificProblemData(problem.getId().toString()));
+            }
             if(allProblems.isEmpty()){
                 return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(allProblems,HttpStatus.OK);
+            return new ResponseEntity<>(result,HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
@@ -355,5 +306,7 @@ public class PublicController {
 
         return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
+
+
 
 }
