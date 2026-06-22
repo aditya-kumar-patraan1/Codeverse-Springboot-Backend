@@ -1,5 +1,4 @@
 package com.adityavikas.codeverse.dto;
-
 import lombok.Data;
 
 @Data
