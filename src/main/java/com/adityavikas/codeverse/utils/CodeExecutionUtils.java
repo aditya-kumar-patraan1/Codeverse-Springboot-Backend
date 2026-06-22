@@ -4,7 +4,6 @@ import com.adityavikas.codeverse.api.response.JdoodleResponse;
 import com.adityavikas.codeverse.cache.AppCache;
 import com.adityavikas.codeverse.dto.ExecuteRequest;
 import com.adityavikas.codeverse.dto.JdoodleRequestDTO;
-import com.adityavikas.codeverse.dto.JdoodleResponseDTO;
 import com.adityavikas.codeverse.dto.LanguageFormatDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
