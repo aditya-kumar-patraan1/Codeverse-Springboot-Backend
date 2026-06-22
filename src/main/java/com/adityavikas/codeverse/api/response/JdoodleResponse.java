@@ -1,4 +1,10 @@
 package com.adityavikas.codeverse.api.response;
 
-public class JdoodleResponse {
+public record JdoodleResponse(
+        String output,
+        String statusCode,
+        String cpuTime,
+        String memory,
+        String error
+) {
 }

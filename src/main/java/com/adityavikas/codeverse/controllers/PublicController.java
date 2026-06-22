@@ -1,4 +1,5 @@
 package com.adityavikas.codeverse.controllers;
+import com.adityavikas.codeverse.api.response.JdoodleResponse;
 import com.adityavikas.codeverse.dto.*;
 import com.adityavikas.codeverse.entity.*;
 import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
@@ -100,8 +101,8 @@ public class PublicController {
 
     @PostMapping("/test-code-doodle")
     public ResponseEntity<?> testJdoodleResponse(@RequestBody ExecuteRequest executeRequest){
-        JdoodleResponseDTO jdoodleResponseDTO = codeExecutionUtils.runJdoodleCode(executeRequest);
-        return ResponseEntity.ok(jdoodleResponseDTO);
+        JdoodleResponse jdoodleResponse = codeExecutionUtils.runJdoodleCode(executeRequest);
+        return ResponseEntity.ok(jdoodleResponse);
     }
 
     @Operation(summary = "to register user to codeverse")

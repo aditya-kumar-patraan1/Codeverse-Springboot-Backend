@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.utils;
 
+import com.adityavikas.codeverse.api.response.JdoodleResponse;
 import com.adityavikas.codeverse.cache.AppCache;
 import com.adityavikas.codeverse.dto.ExecuteRequest;
 import com.adityavikas.codeverse.dto.JdoodleRequestDTO;
@@ -27,7 +28,6 @@ public class CodeExecutionUtils {
     private String JDOODLE_CLIENT_SECRET;
 
     RestTemplate restTemplate = new RestTemplate();
-//    private static final String jdoodleURL = "https://api.jdoodle.com/v1/execute";
 
     @Autowired
     private AppCache appCache;
@@ -61,7 +61,7 @@ public class CodeExecutionUtils {
 
     }
 
-    public JdoodleResponseDTO runJdoodleCode(ExecuteRequest executeRequest){
+    public JdoodleResponse runJdoodleCode(ExecuteRequest executeRequest){
         LanguageFormatDTO config = getJdoodleConfig(executeRequest.getLanguage());
 
         try{
@@ -74,7 +74,7 @@ public class CodeExecutionUtils {
 
     }
 
-    public JdoodleResponseDTO executeUserCode(String clientId,String clientSecret,String userCode,LanguageFormatDTO config){
+    public JdoodleResponse executeUserCode(String clientId,String clientSecret,String userCode,LanguageFormatDTO config){
 
         JdoodleRequestDTO JdoodleRequest = new JdoodleRequestDTO(
                 clientId,
@@ -91,11 +91,11 @@ public class CodeExecutionUtils {
 
         String jdoodleURL = appCache.apiCache.get(AppCache.Keys.JDOODLE_API_URL.toString());
 
-        ResponseEntity<JdoodleResponseDTO> JdoodleResponse = restTemplate.exchange(
+        ResponseEntity<JdoodleResponse> JdoodleResponse = restTemplate.exchange(
                 jdoodleURL,
                 HttpMethod.POST,
                 entity,
-                JdoodleResponseDTO.class
+                JdoodleResponse.class
         );
 
         return JdoodleResponse.getBody();
