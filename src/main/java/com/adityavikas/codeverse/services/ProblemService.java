@@ -138,7 +138,7 @@ public class ProblemService {
             problemDetails.setSpaceComplexity((problemDTO.getSpaceComplexity()!=null?problemDTO.getSpaceComplexity():new HashMap<>()));
             problemDetails.setAlgorithmSteps(problemDTO.getAlgorithmSteps());
 
-            boolean isProblemDetailsSaved = problemDetailService.problemDetailsAdded(problemDetails);
+            boolean isProblemDetailsSaved = problemDetailService.addProblemDetails(problemDetails);
 
             return isProblemDetailsSaved && isAllTestcaseSaved && isProblemSaved;
 

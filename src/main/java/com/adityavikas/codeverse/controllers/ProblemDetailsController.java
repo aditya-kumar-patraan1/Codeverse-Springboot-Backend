@@ -25,7 +25,7 @@ public class ProblemDetailsController {
     @Operation(summary = "This API Endpoint is used to add the Details about the Problem")
     public ResponseEntity<?> problemDetailsAdded(@RequestBody ProblemDetails problemDetails, @PathVariable ObjectId problemId){
         problemDetails.setProblemId(problemId);
-        boolean isSaved = problemDetailService.problemDetailsAdded(problemDetails);
+        boolean isSaved = problemDetailService.addProblemDetails(problemDetails);
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
         if(isSaved){

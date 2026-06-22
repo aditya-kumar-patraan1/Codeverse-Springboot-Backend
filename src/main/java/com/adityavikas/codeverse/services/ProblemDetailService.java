@@ -16,7 +16,7 @@ public class ProblemDetailService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProblemDetailService.class);
 
-    public boolean problemDetailsAdded(ProblemDetails problemDetails){
+    public boolean addProblemDetails(ProblemDetails problemDetails){
         try{
             problemDetailRepository.save(problemDetails);
             return true;

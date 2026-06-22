@@ -26,6 +26,9 @@ public class ContestProblemService {
     @Autowired
     private ProblemService problemService;
 
+    @Autowired
+    private ProblemDetailService problemDetailService;
+
     public ContestProblemService(ContestService contestService,ModelMapper modelMapper,TestcaseService testcaseService){
         this.contestService = contestService;
         this.modelMapper = modelMapper;
@@ -58,13 +61,14 @@ public class ContestProblemService {
 
             ObjectId problemId = problemService.getProblemIdBySlugName(contestProblemDTO.getSlug());
 
-            for(TestcaseDTO testcase : contestProblemDTO.getTestCases()){
+            for(TestcaseDTO testcase : contestProblemDTO.getTestCases()) {
                 Testcase currentTestcase = modelMapper.map(testcase, Testcase.class);
                 currentTestcase.setProblemId(problemId);
-                System.out.println(currentTestcase.getExplanation());
+                testcaseService.addTestcase(currentTestcase,problemId.toString());
             }
 
-            problemService.saveProblem(problem);
+            ProblemDetails problemDetails = modelMapper.map(contestProblemDTO,ProblemDetails.class);
+            problemDetailService.addProblemDetails(problemDetails);
             return true;
         } catch (Exception e) {
             log.error("contest problem not added & rollback...");
