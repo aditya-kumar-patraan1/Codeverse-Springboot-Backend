@@ -148,4 +148,13 @@ public class ProblemService {
         }
     }
 
+    public List<Problem> findProblemByContestId(ObjectId contestId){
+        try{
+            return problemRepository.findByContestId(contestId);
+        } catch (Exception e) {
+            logger.error("no problem exist with contest id : ",contestId);
+            return null;
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.dto.ContestProblemDTO;
+import com.adityavikas.codeverse.dto.ContestProblemResponseDTO;
 import com.adityavikas.codeverse.dto.TestcaseDTO;
 import com.adityavikas.codeverse.entity.Contest;
 import com.adityavikas.codeverse.entity.Problem;
@@ -11,8 +12,10 @@ import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,6 +38,7 @@ public class ContestProblemService {
         this.testcaseService = testcaseService;
     }
 
+    @Transactional
     public boolean addContestProblem(ObjectId contestId, ContestProblemDTO contestProblemDTO){
         try{
             boolean isContestExist = contestService.findContestByContestId(contestId);
@@ -64,16 +68,53 @@ public class ContestProblemService {
             for(TestcaseDTO testcase : contestProblemDTO.getTestCases()) {
                 Testcase currentTestcase = modelMapper.map(testcase, Testcase.class);
                 currentTestcase.setProblemId(problemId);
-                testcaseService.addTestcase(currentTestcase,problemId.toString());
+                boolean isTestcaseSaved = testcaseService.addTestcase(currentTestcase, problemId.toString());
+                if(!isTestcaseSaved){
+                    return false;
+                }
             }
 
             ProblemDetails problemDetails = modelMapper.map(contestProblemDTO,ProblemDetails.class);
-            problemDetailService.addProblemDetails(problemDetails);
+            problemDetails.setProblemId(problemId);
+            boolean isProblemDetailsSaved = problemDetailService.addProblemDetails(problemDetails);
+            if(!isProblemDetailsSaved){
+                return false;
+            }
             return true;
         } catch (Exception e) {
             log.error("contest problem not added & rollback...");
             return false;
         }
     }
+
+    public List<ContestProblemResponseDTO> getAllContestProblems(String contestId){
+        try{
+            List<Problem> allContestProblem = problemService.findProblemByContestId(new ObjectId(contestId));
+            List<ContestProblemResponseDTO> result = new ArrayList<>();
+
+            for(Problem problem : allContestProblem){
+                ContestProblemResponseDTO contestProblemResponseDTO = modelMapper.map(problem,ContestProblemResponseDTO.class);
+                String pId = problem.getId().toString();
+                ProblemDetails problemDetails = problemDetailService.fetchProblemDetail(pId);
+                if(problemDetails!=null){
+                    contestProblemResponseDTO.setDescription(problemDetails.getDescription());
+                    contestProblemResponseDTO.setTemplates(problemDetails.getTemplates());
+                }
+
+                List<Testcase> testcases = testcaseService.fetchTestcase(pId);
+                contestProblemResponseDTO.setTestcases(testcases);
+                result.add(contestProblemResponseDTO);
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            log.error("error during fetching the problem of contest id : ",contestId);
+            return null;
+        }
+
+    }
+
+
 
 }

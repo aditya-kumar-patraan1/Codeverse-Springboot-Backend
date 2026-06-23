@@ -108,6 +108,12 @@ public class PublicController {
         return ResponseEntity.ok(jdoodleResponse);
     }
 
+    @GetMapping("/test-get-all-contest-problem/{contestId}")
+    public ResponseEntity<?> getAllContestProblem(@PathVariable String contestId){
+        List<ContestProblemResponseDTO> allContestProblems = contestProblemService.getAllContestProblems(contestId);
+        return ResponseEntity.ok(allContestProblems);
+    }
+
     @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody LoginUserDTO userDTO){
