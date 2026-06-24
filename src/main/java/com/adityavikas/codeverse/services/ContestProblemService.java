@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -115,6 +116,15 @@ public class ContestProblemService {
 
     }
 
+    public boolean updateContestProblem(String problemId,ContestProblemDTO updatedProblem){
+        try{
+            return true;
+//            return problemService.updateEntireProblem(problemId,updatedProblem);
+        } catch (Exception e) {
+            log.error("contest problem not updated...");
+            return false;
+        }
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.services;
 
+import com.adityavikas.codeverse.dto.ContestProblemDTO;
 import com.adityavikas.codeverse.dto.ProblemDTO;
 import com.adityavikas.codeverse.dto.TestcaseDTO;
 import com.adityavikas.codeverse.entity.Problem;
@@ -156,5 +157,33 @@ public class ProblemService {
             return null;
         }
     }
+
+//    public boolean updateProblem(String problemId,ContestProblemDTO updatedProblem){
+//        try{
+//            Problem oldProblem = fetchProblem(problemId).orElse(null);
+//            if(oldProblem==null){
+//                return false;
+//            }
+//            oldProblem.setVisible();
+//            oldProblem.setStatus();
+//            oldProblem.setSno();
+//            oldProblem.setInputType();
+//            oldProblem.setAcceptanceRate();
+//            return true;
+//        } catch (Exception e) {
+//            logger.error("problem not updated");
+//            return false;
+//        }
+//    }
+
+//    public boolean updateEntireProblem(String problemId, ContestProblemDTO updatedProblem){
+//        try{
+//
+//            return true;
+//        } catch (Exception e) {
+//            logger.error("problem updated");
+//            return false;
+//        }
+//    }
 
 }
