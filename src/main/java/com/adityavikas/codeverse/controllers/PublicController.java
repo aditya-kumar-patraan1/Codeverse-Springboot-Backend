@@ -92,30 +92,6 @@ public class PublicController {
         return ResponseEntity.ok(List.of("Hey !","It's","Working"));
     }
 
-    @Operation(summary = "This API Endpoint is used to test add Contest Problem")
-    @PostMapping("/test-add-contest-problem/{contestId}")
-    public ResponseEntity<?> addContestProblem(@PathVariable ObjectId contestId,@RequestBody ContestProblemDTO contestProblemDTO){
-        boolean isContestProblemAdded = contestProblemService.addContestProblem(contestId, contestProblemDTO);
-        if(isContestProblemAdded){
-            return ResponseEntity.ok("contest problem added");
-        }
-        return ResponseEntity.ok("contest problem not added");
-    }
-
-    @PostMapping("/test-code-doodle")
-    @Operation(summary = "This API Endpoint is used to test the Jdoodle Code runner")
-    public ResponseEntity<?> testJdoodleResponse(@RequestBody ExecuteRequest executeRequest){
-        JdoodleResponse jdoodleResponse = codeExecutionUtils.runJdoodleCode(executeRequest);
-        return ResponseEntity.ok(jdoodleResponse);
-    }
-
-    @GetMapping("/test-get-all-contest-problem/{contestId}")
-    @Operation(summary = "This API Endpoint is used to test the fetching of all Contest Problem")
-    public ResponseEntity<?> getAllContestProblem(@PathVariable String contestId){
-        List<ContestProblemResponseDTO> allContestProblems = contestProblemService.getAllContestProblems(contestId);
-        return ResponseEntity.ok(allContestProblems);
-    }
-
     @Operation(summary = "to register user to codeverse")
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody LoginUserDTO userDTO){
@@ -313,6 +289,44 @@ public class PublicController {
         }
 
         return new ResponseEntity<>(returnResponse,HttpStatus.OK);
+    }
+
+    @Operation(summary = "This API Endpoint is used to test the updation of contest problem")
+    @PutMapping("/test-update-contest-problem/{problemId}")
+    public ResponseEntity<?> updateContestProblem(@PathVariable String problemId,@RequestBody ContestProblemDTO updatedContestProblem){
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        boolean isContestProblemUpdated = contestProblemService.updateContestProblem(problemId, updatedContestProblem);
+        if(isContestProblemUpdated){
+            returnResponse.put("status",1);
+        }
+        return ResponseEntity.ok(returnResponse);
+    }
+
+    @Operation(summary = "This API Endpoint is used to test add Contest Problem")
+    @PostMapping("/test-add-contest-problem/{contestId}")
+    public ResponseEntity<?> addContestProblem(@PathVariable String contestId,@RequestBody ContestProblemDTO contestProblemDTO){
+        boolean isContestProblemAdded = contestProblemService.addContestProblem(new ObjectId(contestId), contestProblemDTO);
+        Map<String,Integer> returnResponse = new HashMap<>();
+        returnResponse.put("status",0);
+        if(isContestProblemAdded){
+            returnResponse.put("status",1);
+        }
+        return ResponseEntity.ok(returnResponse);
+    }
+
+    @PostMapping("/test-code-doodle")
+    @Operation(summary = "This API Endpoint is used to test the Jdoodle Code runner")
+    public ResponseEntity<?> testJdoodleResponse(@RequestBody ExecuteRequest executeRequest){
+        JdoodleResponse jdoodleResponse = codeExecutionUtils.runJdoodleCode(executeRequest);
+        return ResponseEntity.ok(jdoodleResponse);
+    }
+
+    @GetMapping("/test-get-all-contest-problem/{contestId}")
+    @Operation(summary = "This API Endpoint is used to test the fetching of all Contest Problem")
+    public ResponseEntity<?> getAllContestProblem(@PathVariable String contestId){
+        List<ContestProblemResponseDTO> allContestProblems = contestProblemService.getAllContestProblems(contestId);
+        return ResponseEntity.ok(allContestProblems);
     }
 
 

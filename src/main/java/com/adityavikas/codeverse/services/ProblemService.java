@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProblemService {
@@ -158,32 +155,40 @@ public class ProblemService {
         }
     }
 
-//    public boolean updateProblem(String problemId,ContestProblemDTO updatedProblem){
-//        try{
-//            Problem oldProblem = fetchProblem(problemId).orElse(null);
-//            if(oldProblem==null){
-//                return false;
-//            }
-//            oldProblem.setVisible();
-//            oldProblem.setStatus();
-//            oldProblem.setSno();
-//            oldProblem.setInputType();
-//            oldProblem.setAcceptanceRate();
-//            return true;
-//        } catch (Exception e) {
-//            logger.error("problem not updated");
-//            return false;
-//        }
-//    }
+    public boolean updateProblem(String problemId,ContestProblemDTO updatedProblem){
+        try{
+            Problem oldProblem = fetchProblem(problemId).orElse(null);
+            if(oldProblem==null){
+                return false;
+            }
 
-//    public boolean updateEntireProblem(String problemId, ContestProblemDTO updatedProblem){
-//        try{
-//
-//            return true;
-//        } catch (Exception e) {
-//            logger.error("problem updated");
-//            return false;
-//        }
-//    }
+            oldProblem.setSno(updatedProblem.getSno());
+            oldProblem.setTitle(updatedProblem.getTitle());
+            oldProblem.setSlug(updatedProblem.getSlug());
+            oldProblem.setTopicTags(List.of(updatedProblem.getTopicTags().split(",")));
+            oldProblem.setDifficulty(updatedProblem.getDifficulty());
+            oldProblem.setAcceptanceRate(updatedProblem.getAcceptanceRate());
+            oldProblem.setInputType(updatedProblem.getInputType());
+            oldProblem.setReturnType(updatedProblem.getReturnType());
+            oldProblem.setFunctionName(updatedProblem.getFunctionName());
+            oldProblem.setProblemOrder(updatedProblem.getProblemOrder());
+
+            problemRepository.save(oldProblem);
+
+            return true;
+        } catch (Exception e) {
+            logger.error("problem not updated");
+            return false;
+        }
+    }
+
+    public boolean updateEntireProblem(String problemId, ContestProblemDTO updatedProblem){
+        try{
+            return updateProblem(problemId,updatedProblem);
+        } catch (Exception e) {
+            logger.error("problem updated");
+            return false;
+        }
+    }
 
 }

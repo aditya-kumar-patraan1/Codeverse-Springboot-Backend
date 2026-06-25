@@ -24,7 +24,7 @@ public class ProblemDTO {
     String topicTags;
     private boolean status = false;    // be default = false
     private String difficulty;
-    private int acceptanceRate = 0;       // depend on system I will change it to double later on
+    private double acceptanceRate = 0;       // depend on system I will change it to double later on
     private String inputType;
     private String returnType;
     private String functionName;

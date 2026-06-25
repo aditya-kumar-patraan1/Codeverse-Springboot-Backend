@@ -32,7 +32,7 @@ public class Problem {
     List<String> topicTags = new ArrayList<>();
     private boolean status;
     private String difficulty;
-    private int acceptanceRate;
+    private double acceptanceRate;
     private String inputType;
     private String returnType;
     private String functionName;

@@ -118,8 +118,7 @@ public class ContestProblemService {
 
     public boolean updateContestProblem(String problemId,ContestProblemDTO updatedProblem){
         try{
-            return true;
-//            return problemService.updateEntireProblem(problemId,updatedProblem);
+            return problemService.updateEntireProblem(problemId,updatedProblem);
         } catch (Exception e) {
             log.error("contest problem not updated...");
             return false;
