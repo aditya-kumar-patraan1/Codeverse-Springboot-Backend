@@ -33,4 +33,15 @@ public class TrickController {
         return ResponseEntity.ok(returnResponse);
     }
 
+    @GetMapping("/get")
+    @Operation(summary = "This API Endpoint is used to access the trick note")
+    public ResponseEntity<?> getNote(){
+        Trick note = trickService.getNote();
+        String result = "";
+        if(note!=null){
+            result=note.getNote();
+        }
+        return ResponseEntity.ok(result);
+    }
+
 }

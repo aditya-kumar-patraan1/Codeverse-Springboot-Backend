@@ -33,4 +33,13 @@ public class TrickService {
         }
     }
 
+    public Trick getNote(){
+        try{
+            return trickRepository.findAll().stream().findFirst().orElse(null);
+        } catch (Exception e) {
+            log.error("empty notes found");
+            return null;
+        }
+    }
+
 }
