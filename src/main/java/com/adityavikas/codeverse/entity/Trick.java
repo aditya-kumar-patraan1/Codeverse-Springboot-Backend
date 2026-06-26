@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Document(collection = "Tricks")
 @Data
-public class Tricks {
+public class Trick {
 
     private String notes;
     private LocalDateTime updated_at;
