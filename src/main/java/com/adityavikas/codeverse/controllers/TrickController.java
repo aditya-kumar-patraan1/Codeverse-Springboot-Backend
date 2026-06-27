@@ -37,11 +37,14 @@ public class TrickController {
     @Operation(summary = "This API Endpoint is used to access the trick note")
     public ResponseEntity<?> getNote(){
         Trick note = trickService.getNote();
-        String result = "";
+        Map<String,Object> returnResponse = new HashMap<>();
+        returnResponse.put("html","");
+        returnResponse.put("savedAt",null);
         if(note!=null){
-            result=note.getNote();
+            returnResponse.put("html",note.getNote());
+            returnResponse.put("savedAt",note.getUpdated_at());
         }
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(returnResponse);
     }
 
 }
