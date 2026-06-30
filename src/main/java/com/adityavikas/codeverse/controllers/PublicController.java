@@ -47,7 +47,6 @@ public class PublicController {
     @Autowired
     private UserProfileService userProfileService;
 
-
     @Autowired
     private ContestService contestService;
 

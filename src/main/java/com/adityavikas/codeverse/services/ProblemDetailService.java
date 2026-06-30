@@ -1,5 +1,6 @@
 package com.adityavikas.codeverse.services;
 
+import com.adityavikas.codeverse.dto.ContestProblemDTO;
 import com.adityavikas.codeverse.entity.ProblemDetails;
 import com.adityavikas.codeverse.repository.ProblemDetailRepository;
 import org.bson.types.ObjectId;
@@ -46,6 +47,24 @@ public class ProblemDetailService {
         }
         catch(Exception e){
             logger.error("problem Details not deleted");
+            return false;
+        }
+    }
+
+    public boolean updateProblemDetails(String problemId, ContestProblemDTO contestProblemDTO){
+        try{
+            ProblemDetails oldProblemDetails = fetchProblemDetail(problemId);
+            oldProblemDetails.setTemplates(contestProblemDTO.getTemplates());
+            oldProblemDetails.setDescription(contestProblemDTO.getDescription());
+            oldProblemDetails.setSolutions(contestProblemDTO.getSolutions());
+            oldProblemDetails.setSpaceComplexity(contestProblemDTO.getSpaceComplexity());
+            oldProblemDetails.setAlgorithmSteps(contestProblemDTO.getAlgorithmSteps());
+            oldProblemDetails.setEditorial(contestProblemDTO.getEditorial());
+            oldProblemDetails.setTimeComplexity(contestProblemDTO.getTimeComplexity());
+            problemDetailRepository.save(oldProblemDetails);
+            return true;
+        } catch (Exception e) {
+            logger.error("Problem Details not updated");
             return false;
         }
     }

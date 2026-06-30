@@ -184,7 +184,9 @@ public class ProblemService {
 
     public boolean updateEntireProblem(String problemId, ContestProblemDTO updatedProblem){
         try{
-            return updateProblem(problemId,updatedProblem);
+            boolean isProblemUpdated = updateProblem(problemId,updatedProblem);
+            boolean isProblemDetailUpdated = problemDetailService.updateProblemDetails(problemId,updatedProblem);
+            return isProblemUpdated && isProblemDetailUpdated;
         } catch (Exception e) {
             logger.error("problem updated");
             return false;
