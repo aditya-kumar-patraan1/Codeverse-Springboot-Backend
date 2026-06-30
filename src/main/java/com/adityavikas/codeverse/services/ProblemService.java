@@ -186,7 +186,8 @@ public class ProblemService {
         try{
             boolean isProblemUpdated = updateProblem(problemId,updatedProblem);
             boolean isProblemDetailUpdated = problemDetailService.updateProblemDetails(problemId,updatedProblem);
-            return isProblemUpdated && isProblemDetailUpdated;
+            boolean isTestcaseUpdated = testcaseService.updateTestcase(problemId,updatedProblem.getTestCases());
+            return isProblemUpdated && isProblemDetailUpdated && isTestcaseUpdated;
         } catch (Exception e) {
             logger.error("problem updated");
             return false;
