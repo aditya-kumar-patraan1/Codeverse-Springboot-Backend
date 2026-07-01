@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.DsaTemplate;
 import com.adityavikas.codeverse.repository.DsaTemplateRepository;
+import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,12 @@ public class DsaTemplateService {
 
     @Autowired
     private DsaTemplateRepository dsaTemplateRepository;
+
+    private  final DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl;
+
+    public DsaTemplateService(DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl){
+        this.dsaTemplateRepositoryImpl = dsaTemplateRepositoryImpl;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(DsaTemplateService.class);
 
@@ -53,6 +60,15 @@ public class DsaTemplateService {
             return true;
         } catch (Exception e) {
             logger.error("no deletion DSA Template due to error : "+e);
+            return false;
+        }
+    }
+
+    public boolean updateDSATemplate(ObjectId mongoObjectId,DsaTemplate updatedDSATemplate){
+        try{
+            return dsaTemplateRepositoryImpl.updateDSAContent(mongoObjectId, updatedDSATemplate);
+        } catch (Exception e) {
+            logger.error("Error occurred during updating DSA Template : {0}",e);
             return false;
         }
     }

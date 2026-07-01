@@ -3,6 +3,7 @@ package com.adityavikas.codeverse.repository;
 import com.adityavikas.codeverse.entity.DsaTemplate;
 import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,11 +29,11 @@ public class DsaTemplateRepositoryImpl {
         }
     }
 
-    public boolean updateDSAContent(String templateId,DsaTemplate dsaTemplate){
+    public boolean updateDSAContent(ObjectId mongoObjectId, DsaTemplate dsaTemplate){
         try{
 
             Query query = new Query();
-            query.addCriteria(Criteria.where("templateId").is(templateId));
+            query.addCriteria(Criteria.where("id").is(mongoObjectId));
 
             Update update = new Update();
             update.set("title",dsaTemplate.getTitle());
