@@ -64,7 +64,7 @@ public class DsaTemplateController {
         Map<String,Integer> returnResponse = new HashMap<>();
         returnResponse.put("status",0);
 
-        boolean isUpdated = dsaTemplateRepositoryImpl.updateDSAContent(new ObjectId(templateId),dsaTemplate);
+        boolean isUpdated = dsaTemplateService.updateDSATemplate(new ObjectId(templateId),dsaTemplate);
 
         if(isUpdated){
             returnResponse.put("status",1);
