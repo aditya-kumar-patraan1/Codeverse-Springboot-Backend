@@ -27,5 +27,4 @@ Having:
 7. Integration of OAuth2
 8. Integration of swagger
 9. Added mongo relationship between collections
-10. Dashboard handlingz
-
+10. Dashboard handling
