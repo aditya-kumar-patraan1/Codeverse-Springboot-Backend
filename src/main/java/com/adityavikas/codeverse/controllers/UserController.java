@@ -2,7 +2,10 @@ package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.dto.APIResponseDTO;
 import com.adityavikas.codeverse.entity.User;
+import com.adityavikas.codeverse.middleware.Middlewares;
+import com.adityavikas.codeverse.repository.DsaTemplateRepository;
 import com.adityavikas.codeverse.repository.UserRepository;
+import com.adityavikas.codeverse.services.DsaTemplateService;
 import com.adityavikas.codeverse.services.UserService;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @Component
 @RestController
@@ -30,6 +35,12 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DsaTemplateService dsaTemplateService;
+
+    @Autowired
+    private Middlewares middlewares;
 
     @Operation(summary = "to check working based on authentication token")
     @GetMapping("/isWorking")
@@ -61,6 +72,26 @@ public class UserController {
         catch(Exception e){
             return new ResponseEntity<>("jwt token is incorrect",HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping("/markDSAContentCompleted/{subtitleSlug}")
+    @Operation(summary="This API Endpoint is used to mark the DSA Content Completed")
+    public ResponseEntity<?> addToCompletedStatus(@PathVariable String subtitleSlug,HttpServletRequest header){
+
+        String authorizationHeader = header.getHeader("authorization");
+        String userId = middlewares.getUserIdByJwt(authorizationHeader);
+        User registeredUser = middlewares.getUserByJwt(authorizationHeader);
+        HashMap<String,Integer> returnResponse = new HashMap<>();
+
+        returnResponse.put("status",0);
+
+        boolean isCompletedMarked = dsaTemplateService.addToCompletedStatus(registeredUser,subtitleSlug);
+
+        if(isCompletedMarked){
+            returnResponse.put("status",1);
+        }
+
+        return ResponseEntity.ok(returnResponse);
     }
 
 

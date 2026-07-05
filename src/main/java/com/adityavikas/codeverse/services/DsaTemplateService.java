@@ -18,6 +18,9 @@ public class DsaTemplateService {
     @Autowired
     private DsaTemplateRepository dsaTemplateRepository;
 
+    @Autowired
+    private UserService userService;
+
     private  final DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl;
 
     public DsaTemplateService(DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl){
@@ -74,16 +77,21 @@ public class DsaTemplateService {
         }
     }
 
-    public boolean addToCompletedStatus(List<String> completedStatus){
+    public boolean addToCompletedStatus(User user,String titleSlug){
         try{
-            return true;
+            if(user.getCompletedSlugs().contains(titleSlug)){
+                user.getCompletedSlugs().add(titleSlug);
+                userService.saveUser(user);
+                return false;
+            }
+            return false;
         } catch (Exception e) {
             logger.error("Error faced while adding to completed status");
             return false;
         }
     }
 
-    public boolean removeFromCompletedStatus(List<String> completedStatus){
+    public boolean removeFromCompletedStatus(List<String> completedSlugs){
         try{
             return true;
         } catch (Exception e) {
