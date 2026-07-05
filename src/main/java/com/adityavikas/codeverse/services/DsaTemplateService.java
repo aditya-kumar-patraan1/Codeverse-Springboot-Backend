@@ -80,11 +80,11 @@ public class DsaTemplateService {
     public boolean addToCompletedStatus(User user,String titleSlug){
         try{
             if(user.getCompletedSlugs().contains(titleSlug)){
-                user.getCompletedSlugs().add(titleSlug);
-                userService.saveUser(user);
                 return false;
             }
-            return false;
+            user.getCompletedSlugs().add(titleSlug);
+            userService.saveUser(user);
+            return true;
         } catch (Exception e) {
             logger.error("Error faced while adding to completed status");
             return false;
