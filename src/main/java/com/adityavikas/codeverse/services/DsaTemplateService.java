@@ -1,6 +1,7 @@
 package com.adityavikas.codeverse.services;
 
 import com.adityavikas.codeverse.entity.DsaTemplate;
+import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.repository.DsaTemplateRepository;
 import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import org.bson.types.ObjectId;
@@ -69,6 +70,24 @@ public class DsaTemplateService {
             return dsaTemplateRepositoryImpl.updateDSAContent(mongoObjectId, updatedDSATemplate);
         } catch (Exception e) {
             logger.error("Error occurred during updating DSA Template : {0}",e);
+            return false;
+        }
+    }
+
+    public boolean addToCompletedStatus(List<String> completedStatus){
+        try{
+            return true;
+        } catch (Exception e) {
+            logger.error("Error faced while adding to completed status");
+            return false;
+        }
+    }
+
+    public boolean removeFromCompletedStatus(List<String> completedStatus){
+        try{
+            return true;
+        } catch (Exception e) {
+            logger.error("Error faced while removing from completed status");
             return false;
         }
     }

@@ -37,6 +37,7 @@ public class User {
 //    @DBRef
     private boolean isBan = false;
     private List<ObjectId> registeredContest = new ArrayList<>();
+    private List<String> completedSlugs = new ArrayList<>();   // to keep track which are completed which are not
     private LocalDateTime created_at;
 
 }
