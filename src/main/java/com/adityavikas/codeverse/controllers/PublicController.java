@@ -2,6 +2,7 @@ package com.adityavikas.codeverse.controllers;
 import com.adityavikas.codeverse.api.response.JdoodleResponse;
 import com.adityavikas.codeverse.dto.*;
 import com.adityavikas.codeverse.entity.*;
+import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import com.adityavikas.codeverse.repository.DsaTitleRepositoryImpl;
 import com.adityavikas.codeverse.repository.UserRepository;
@@ -10,8 +11,10 @@ import com.adityavikas.codeverse.utils.CodeExecutionUtils;
 import com.adityavikas.codeverse.utils.JwtUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,9 @@ public class PublicController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private Middlewares middlewares;
 
     @Autowired
     private PublicService publicService;
@@ -240,10 +246,12 @@ public class PublicController {
 
     @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content")
     @GetMapping("/getDSAContent")
-    public ResponseEntity<?> getDSAContent(){
+    public ResponseEntity<?> getDSAContent(HttpServletRequest httpRequest){
         List<DsaHeader> allHeaders = dsaHeaderService.getAllHeaders();
         Map<String,DSAContentDTO> returnResponse = new HashMap<>();
 
+        User user = middlewares.getUserByJwt(httpRequest.getHeader("Authorization"));
+        List<String> completedSlugs = user.getCompletedSlugs();
 
         for(var currHeader : allHeaders){
 
@@ -274,7 +282,10 @@ public class PublicController {
                     specificTemplate.setVideoLinks(currTemplate.getVideoLinks());
                     specificTemplate.setTitle(currTemplate.getTitle());
                     specificTemplate.setId(currTemplate.getId());
-
+                    // newly added
+                    if(completedSlugs.contains(currTemplate.getTemplateId())){
+                        specificTemplate.setStatus(true);
+                    }
                     specificAlgoCollection.getCodeTemplates().put(currTemplate.getTemplateId(),specificTemplate);
 
                 }

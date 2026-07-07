@@ -36,6 +36,7 @@ public class DSAContentDTO {
         private List<String> problemLinks = new ArrayList<>();
         private String cpp;
         private String java;
+        private boolean status = false;    // newly added to keep track of marked status
         private String python;
         private String javascript;
     }
