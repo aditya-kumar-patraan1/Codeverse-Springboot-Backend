@@ -251,7 +251,11 @@ public class PublicController {
         Map<String,DSAContentDTO> returnResponse = new HashMap<>();
 
         User user = middlewares.getUserByJwt(httpRequest.getHeader("Authorization"));
-        List<String> completedSlugs = user.getCompletedSlugs();
+        List<String> completedSlugs = new ArrayList<>();
+
+        if(user!=null){
+            completedSlugs = user.getCompletedSlugs();
+        }
 
         for(var currHeader : allHeaders){
 
