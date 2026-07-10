@@ -1,10 +1,17 @@
 package com.adityavikas.codeverse.controllers;
 
 import com.adityavikas.codeverse.dto.APIResponseDTO;
+import com.adityavikas.codeverse.dto.DSAContentDTO;
+import com.adityavikas.codeverse.entity.DsaHeader;
+import com.adityavikas.codeverse.entity.DsaTemplate;
+import com.adityavikas.codeverse.entity.DsaTitle;
 import com.adityavikas.codeverse.entity.User;
 import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.repository.DsaTemplateRepository;
+import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
+import com.adityavikas.codeverse.repository.DsaTitleRepositoryImpl;
 import com.adityavikas.codeverse.repository.UserRepository;
+import com.adityavikas.codeverse.services.DsaHeaderService;
 import com.adityavikas.codeverse.services.DsaTemplateService;
 import com.adityavikas.codeverse.services.UserService;
 import com.adityavikas.codeverse.utils.JwtUtils;
@@ -17,7 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @RestController
@@ -32,6 +42,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DsaTitleRepositoryImpl dsaTitleRepositoryImpl;
+
+    @Autowired
+    private DsaHeaderService dsaHeaderService;
+
+    @Autowired
+    private DsaTemplateRepositoryImpl dsaTemplateRepositoryImpl;
 
     @Autowired
     private UserRepository userRepository;
@@ -92,6 +111,70 @@ public class UserController {
         }
 
         return ResponseEntity.ok(returnResponse);
+    }
+
+    @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content (with user logged in)")
+    @GetMapping("/getDSAContent")
+    public ResponseEntity<?> getDSAContent(HttpServletRequest httpRequest){
+        List<DsaHeader> allHeaders = dsaHeaderService.getAllHeaders();
+        Map<String, DSAContentDTO> returnResponse = new HashMap<>();
+
+        User user = middlewares.getUserByJwt(httpRequest.getHeader("Authorization"));
+        List<String> completedSlugs = new ArrayList<>();
+
+        if(user!=null){
+            completedSlugs = user.getCompletedSlugs();
+        }
+
+        for(var currHeader : allHeaders){
+
+            String categoryId = currHeader.getHeaderId();
+            List<DsaTitle> allTitleByCategoryId = dsaTitleRepositoryImpl.getAllTitleByCategoryId(categoryId);
+            DSAContentDTO dsaContentDTO = new DSAContentDTO();
+
+            dsaContentDTO.setTitle(currHeader.getTitle());
+            dsaContentDTO.setDescription(currHeader.getDescription());
+
+            for(DsaTitle dsaTitle : allTitleByCategoryId){
+
+                String titleId = dsaTitle.getTitleId();
+                List<DsaTemplate> dsaTemplates = dsaTemplateRepositoryImpl.getDsaTemplatesByParentId(titleId);
+                DSAContentDTO.SpecificAlgoCollection specificAlgoCollection = new DSAContentDTO.SpecificAlgoCollection();
+
+                specificAlgoCollection.setDescription(dsaTitle.getDescription());
+                specificAlgoCollection.setTitle(dsaTitle.getTitle());
+                specificAlgoCollection.setDifficulty(dsaTitle.getDifficulty());
+
+                for(var currTemplate : dsaTemplates){
+                    DSAContentDTO.SpecificTemplate specificTemplate = new DSAContentDTO.SpecificTemplate();
+                    specificTemplate.setCpp(currTemplate.getCpp());
+                    specificTemplate.setPython(currTemplate.getPython());
+                    specificTemplate.setJavascript(currTemplate.getJavascript());
+                    specificTemplate.setJava(currTemplate.getJava());
+                    specificTemplate.setProblemLinks(currTemplate.getProblemLinks());
+                    specificTemplate.setVideoLinks(currTemplate.getVideoLinks());
+                    specificTemplate.setTitle(currTemplate.getTitle());
+                    specificTemplate.setId(currTemplate.getId());
+                    // newly added
+                    if(completedSlugs.contains(currTemplate.getTemplateId())){
+                        specificTemplate.setStatus(true);
+                    }
+                    else{
+                        specificTemplate.setStatus(false);
+                    }
+                    specificAlgoCollection.getCodeTemplates().put(currTemplate.getTemplateId(),specificTemplate);
+
+                }
+
+                dsaContentDTO.getTopics().put(dsaTitle.getTitleId(),specificAlgoCollection);
+
+            }
+
+            returnResponse.put(categoryId,dsaContentDTO);
+
+        }
+
+        return new ResponseEntity<>(returnResponse,HttpStatus.OK);
     }
 
 

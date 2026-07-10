@@ -1,20 +1,29 @@
 package com.adityavikas.codeverse.controllers;
 
+import com.adityavikas.codeverse.dto.DSAContentDTO;
+import com.adityavikas.codeverse.entity.DsaHeader;
 import com.adityavikas.codeverse.entity.DsaTemplate;
 import com.adityavikas.codeverse.entity.DsaTitle;
+import com.adityavikas.codeverse.entity.User;
+import com.adityavikas.codeverse.middleware.Middlewares;
 import com.adityavikas.codeverse.repository.DsaTemplateRepositoryImpl;
 import com.adityavikas.codeverse.repository.DsaTitleRepository;
+import com.adityavikas.codeverse.repository.DsaTitleRepositoryImpl;
+import com.adityavikas.codeverse.services.DsaHeaderService;
 import com.adityavikas.codeverse.services.DsaTemplateService;
 import com.adityavikas.codeverse.services.DsaTitleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -92,7 +101,5 @@ public class DsaTemplateController {
 
 
     }
-
-
 
 }

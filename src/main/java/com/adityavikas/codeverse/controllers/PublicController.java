@@ -244,18 +244,11 @@ public class PublicController {
         }
     }
 
-    @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content")
+    @Operation(summary = "This API Endpoint is used to display the entire DSA Revision Content (with user logged in)")
     @GetMapping("/getDSAContent")
-    public ResponseEntity<?> getDSAContent(HttpServletRequest httpRequest){
+    public ResponseEntity<?> getDSAContent(){
         List<DsaHeader> allHeaders = dsaHeaderService.getAllHeaders();
         Map<String,DSAContentDTO> returnResponse = new HashMap<>();
-
-        User user = middlewares.getUserByJwt(httpRequest.getHeader("Authorization"));
-        List<String> completedSlugs = new ArrayList<>();
-
-        if(user!=null){
-            completedSlugs = user.getCompletedSlugs();
-        }
 
         for(var currHeader : allHeaders){
 
@@ -287,9 +280,7 @@ public class PublicController {
                     specificTemplate.setTitle(currTemplate.getTitle());
                     specificTemplate.setId(currTemplate.getId());
                     // newly added
-                    if(completedSlugs.contains(currTemplate.getTemplateId())){
-                        specificTemplate.setStatus(true);
-                    }
+                    specificTemplate.setStatus(false);
                     specificAlgoCollection.getCodeTemplates().put(currTemplate.getTemplateId(),specificTemplate);
 
                 }
