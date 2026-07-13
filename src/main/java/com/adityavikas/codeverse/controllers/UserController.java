@@ -98,15 +98,32 @@ public class UserController {
     public ResponseEntity<?> addToCompletedStatus(@PathVariable String subtitleSlug,HttpServletRequest header){
 
         String authorizationHeader = header.getHeader("authorization");
-        String userId = middlewares.getUserIdByJwt(authorizationHeader);
         User registeredUser = middlewares.getUserByJwt(authorizationHeader);
         HashMap<String,Integer> returnResponse = new HashMap<>();
-
         returnResponse.put("status",0);
 
         boolean isCompletedMarked = dsaTemplateService.addToCompletedStatus(registeredUser,subtitleSlug);
 
         if(isCompletedMarked){
+            returnResponse.put("status",1);
+        }
+
+        return ResponseEntity.ok(returnResponse);
+    }
+
+    @PutMapping("/markDSAContentInCompleted/{subtitleSlug}")
+    @Operation(summary="This API Endpoint is used to unmark the DSA Content Completed")
+    public ResponseEntity<?> deleteFromCompletedStatus(@PathVariable String subtitleSlug,HttpServletRequest header){
+
+        String authorizationHeader = header.getHeader("authorization");
+        User registeredUser = middlewares.getUserByJwt(authorizationHeader);
+        HashMap<String,Integer> returnResponse = new HashMap<>();
+
+        returnResponse.put("status",0);
+
+        boolean isCompletedUnmarked = dsaTemplateService.removeFromCompletedStatus(registeredUser,subtitleSlug);
+
+        if(isCompletedUnmarked){
             returnResponse.put("status",1);
         }
 

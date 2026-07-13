@@ -91,9 +91,17 @@ public class DsaTemplateService {
         }
     }
 
-    public boolean removeFromCompletedStatus(List<String> completedSlugs){
+    public boolean removeFromCompletedStatus(User user,String titleSlug){
         try{
-            return true;
+            if(user.getCompletedSlugs().contains(titleSlug)){
+                boolean isRemoved = user.getCompletedSlugs().remove(titleSlug);
+                if(isRemoved) {
+                    userService.saveUser(user);
+                    return true;
+                }
+                return false;
+            }
+            return false;
         } catch (Exception e) {
             logger.error("Error faced while removing from completed status");
             return false;
